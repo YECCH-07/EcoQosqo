@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "App EcoQosqo",
+    "slug": "app-ecoqosqo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0F6B4F"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.ecoqosqo.app"
+    }
+  }
+}
