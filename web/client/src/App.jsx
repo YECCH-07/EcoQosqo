@@ -1,9 +1,13 @@
 import React, { useMemo, useState } from 'react';
+import SplashScreen from './components/SplashScreen';
 import LoginForm from './components/LoginForm';
 import AdminPanel from './components/AdminPanel';
 import './styles.css';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [appReady, setAppReady] = useState(false);
+
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('user');
@@ -11,8 +15,12 @@ function App() {
   });
   const isAuthenticated = useMemo(() => Boolean(token), [token]);
 
+  const handleSplashFinish = () => {
+    setAppReady(true);
+    setTimeout(() => setShowSplash(false), 100);
+  };
+
   const handleLoginSuccess = (loginPayload) => {
-    // Compatibilidad: si algún backend aún manda solo token string
     if (typeof loginPayload === 'string') {
       localStorage.setItem('token', loginPayload);
       setToken(loginPayload);
@@ -40,8 +48,19 @@ function App() {
     setUser(null);
   };
 
-  if (!isAuthenticated) return <LoginForm onLoginSuccess={handleLoginSuccess} />;
-  return <AdminPanel onLogout={handleLogout} user={user} />;
+  if (showSplash) {
+    return <SplashScreen onFinish={handleSplashFinish} />;
+  }
+
+  return (
+    <div className={`app-container ${appReady ? 'app-visible' : ''}`}>
+      {!isAuthenticated ? (
+        <LoginForm onLoginSuccess={handleLoginSuccess} />
+      ) : (
+        <AdminPanel onLogout={handleLogout} user={user} />
+      )}
+    </div>
+  );
 }
 
 export default App;
