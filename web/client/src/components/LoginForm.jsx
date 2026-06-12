@@ -9,11 +9,14 @@ const LoginForm = ({ onLoginSuccess }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [forgotMessage, setForgotMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     setError('');
     setForgotMessage('');
+    setSubmitting(true);
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
@@ -22,6 +25,8 @@ const LoginForm = ({ onLoginSuccess }) => {
     } catch (err) {
       const backendMessage = err?.response?.data?.message;
       setError(backendMessage || 'No se pudo iniciar sesión. Verifique sus datos y la conexión con el servidor.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -105,9 +110,9 @@ const LoginForm = ({ onLoginSuccess }) => {
           {forgotMessage && <p className="login-info">{forgotMessage}</p>}
           {error && <p className="login-error">{error}</p>}
 
-          <button type="submit" className="login-btn">
+          <button type="submit" className="login-btn" disabled={submitting}>
             <LogIn size={18} />
-            Iniciar Sesión
+            {submitting ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
 

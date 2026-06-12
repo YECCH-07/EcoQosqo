@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   LayoutDashboard,
+  Building2,
   Truck,
   Route,
   BookOpen,
@@ -8,6 +9,8 @@ import {
   LogOut,
   Puzzle,
 } from 'lucide-react';
+import PersonalManager from './PersonalManager';
+import OrganigramaManager from './OrganigramaManager';
 
 const normalizeRole = (role) => (role || '').toUpperCase().trim();
 
@@ -16,35 +19,42 @@ const allModules = [
     key: 'dashboard',
     icon: LayoutDashboard,
     name: 'Dashboard',
-    allowedRoles: ['ADMIN'],
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR'],
     summary: 'Resumen general de indicadores del sistema.',
+  },
+  {
+    key: 'organigrama',
+    icon: Building2,
+    name: 'Organigrama',
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR'],
+    summary: 'Estructura orgánica de la municipalidad (gerencias, subgerencias, oficinas).',
   },
   {
     key: 'unidades',
     icon: Truck,
     name: 'Gestión de Unidades',
-    allowedRoles: ['ADMIN', 'MAQUINARIAS'],
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'MAQUINARIAS'],
     summary: 'Registro y control de unidades (crear, editar y estado).',
   },
   {
     key: 'rutas-equipos',
     icon: Route,
     name: 'Gestión de Rutas y Equipos',
-    allowedRoles: ['ADMIN', 'OPERADOR'],
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'OPERADOR'],
     summary: 'Asignación de rutas con unidad, conductor y ayudante.',
   },
   {
     key: 'reclamos',
     icon: BookOpen,
     name: 'Gestión de Libro de Reclamos',
-    allowedRoles: ['ADMIN', 'OPERADOR DE NOTIFICACIONES'],
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'OPERADOR DE NOTIFICACIONES'],
     summary: 'Atención y seguimiento de reclamos y reportes ciudadanos.',
   },
   {
     key: 'personal',
     icon: Users,
     name: 'Gestión de Personal',
-    allowedRoles: ['ADMIN', 'RECURSOS'],
+    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'RECURSOS'],
     summary: 'Alta y mantenimiento de personal (conductor, ayudante, limpieza).',
   },
 ];
@@ -84,13 +94,13 @@ const getBaseContentByModule = (moduleKey) => {
 const AdminPanel = ({ onLogout, user }) => {
   const currentRole = normalizeRole(user?.rol);
   const isAdmin =
-    ['ADMIN'].includes(currentRole)
-    || Number(user?.rol_id) === 1;
+    ['ADMIN', 'ADMINISTRADOR'].includes(currentRole)
+    || Number(user?.rol_id) === 1
+    || Number(user?.rol_id) === 7;
 
   const modules = useMemo(() => {
-    if (isAdmin) return allModules;
     return allModules.filter((module) => module.allowedRoles.includes(currentRole));
-  }, [currentRole, isAdmin]);
+  }, [currentRole]);
 
   const [activeModuleKey, setActiveModuleKey] = useState(() => modules[0]?.key || '');
   const [inactivityWarning, setInactivityWarning] = useState(false);
@@ -179,43 +189,17 @@ const AdminPanel = ({ onLogout, user }) => {
       </aside>
 
       <main className="main-content">
-        <header className="content-header">
-          <h2>Panel de Administración &mdash; EcoQosqo</h2>
-          <p>
-            {isAdmin
-              ? 'Acceso completo a todos los módulos del sistema.'
-              : 'Visualiza los módulos autorizados para su perfil.'}
-          </p>
-        </header>
-
         {inactivityWarning && (
           <div className="inactivity-warning">
             Su sesión se cerrará por inactividad en 2 minutos. Realice alguna acción para mantenerla activa.
           </div>
         )}
 
-        <section className="module-grid">
-          {modules.map((module) => {
-            const IconComponent = module.icon;
-            const isActive = module.key === activeModule?.key;
-            return (
-              <button
-                key={module.key}
-                className={`module-card ${isActive ? 'module-card-active' : ''}`}
-                onClick={() => setActiveModuleKey(module.key)}
-                type="button"
-              >
-                <div className="module-card-icon">
-                  <IconComponent size={24} />
-                </div>
-                <h3>{module.name}</h3>
-                <p>{module.summary}</p>
-              </button>
-            );
-          })}
-        </section>
-
-        {activeModule ? (
+        {activeModule?.key === 'personal' ? (
+          <PersonalManager readOnly={isAdmin} />
+        ) : activeModule?.key === 'organigrama' ? (
+          <OrganigramaManager />
+        ) : activeModule ? (
           <section className="module-detail">
             <div className="module-detail-header">
               <Puzzle size={20} />

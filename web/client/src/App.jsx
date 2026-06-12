@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import SplashScreen from './components/SplashScreen';
 import LoginForm from './components/LoginForm';
 import AdminPanel from './components/AdminPanel';
@@ -15,10 +15,10 @@ function App() {
   });
   const isAuthenticated = useMemo(() => Boolean(token), [token]);
 
-  const handleSplashFinish = () => {
+  const handleSplashFinish = useCallback(() => {
     setAppReady(true);
     setTimeout(() => setShowSplash(false), 100);
-  };
+  }, []);
 
   const handleLoginSuccess = (loginPayload) => {
     if (typeof loginPayload === 'string') {
