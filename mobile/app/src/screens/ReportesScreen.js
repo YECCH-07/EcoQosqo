@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   formTitle: {
     color: colors.text,
     fontSize: 18,
-    fontWeight: '900',
+    fontWeight: '700',
     marginBottom: 12
   },
   input: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     flex: 1,
     fontSize: 17,
-    fontWeight: '900',
+    fontWeight: '700',
     paddingRight: 10
   },
   screen: {
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: colors.text,
     fontSize: 18,
-    fontWeight: '900',
+    fontWeight: '700',
     marginBottom: 12,
     marginTop: 22
   },
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: colors.primaryDark,
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '700',
     overflow: 'hidden',
     paddingHorizontal: 9,
     paddingVertical: 5
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   },
   submitText: {
     color: colors.white,
-    fontWeight: '900'
+    fontWeight: '700'
   },
   subtitle: {
     color: colors.secondary,
@@ -300,6 +300,6 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontSize: 24,
-    fontWeight: '900'
+    fontWeight: '700'
   }
 });

@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
   name: {
     color: colors.text,
     fontSize: 24,
-    fontWeight: '900',
+    fontWeight: '700',
     marginTop: 14,
     textAlign: 'center'
   },
   role: {
     color: colors.primaryDark,
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: '700',
     marginTop: 6
   },
   row: {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   value: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: '700',
     marginTop: 3
   }
 });

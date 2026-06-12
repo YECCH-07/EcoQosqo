@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '../styles/theme';
+import { colors, alpha } from '../styles/theme';
+import Logo from '../components/Logo';
 
 export default function SplashScreen() {
   return (
     <View style={styles.container}>
-      <View style={styles.logo}>
-        <Text style={styles.logoText}>EQ</Text>
-      </View>
-      <Text style={styles.title}>App EcoQosqo</Text>
-      <Text style={styles.subtitle}>Gestión inteligente de residuos</Text>
+      <Logo size={120} />
+      <Text style={styles.title}>EcoQosqo</Text>
+      <Text style={styles.subtitle}>Gestión Ambiental Inteligente</Text>
       <View style={styles.loader}>
         <View style={styles.loaderFill} />
       </View>
@@ -23,46 +22,35 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
   },
   loader: {
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: alpha.white15,
     borderRadius: 999,
-    height: 6,
-    marginTop: 34,
+    height: 5,
+    marginTop: 36,
     overflow: 'hidden',
-    width: 180
+    width: 160,
   },
   loaderFill: {
     backgroundColor: colors.accent,
     borderRadius: 999,
-    height: 6,
-    width: '68%'
-  },
-  logo: {
-    alignItems: 'center',
-    backgroundColor: colors.accent,
-    borderRadius: 32,
-    height: 96,
-    justifyContent: 'center',
-    marginBottom: 22,
-    width: 96
-  },
-  logoText: {
-    color: colors.primaryDark,
-    fontSize: 34,
-    fontWeight: '900'
+    height: 5,
+    width: '68%',
   },
   subtitle: {
-    color: 'rgba(255,255,255,0.86)',
-    fontSize: 16,
-    marginTop: 8,
-    textAlign: 'center'
+    color: alpha.white70,
+    fontSize: 15,
+    letterSpacing: 1,
+    marginTop: 24,
+    textAlign: 'center',
   },
   title: {
-    color: colors.white,
-    fontSize: 30,
+    color: colors.accent,
+    fontSize: 32,
     fontWeight: '800',
-    textAlign: 'center'
-  }
+    letterSpacing: -0.5,
+    marginTop: 20,
+    textAlign: 'center',
+  },
 });

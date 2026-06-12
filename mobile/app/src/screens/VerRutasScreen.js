@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, shadows } from '../styles/theme';
+import { colors, shadows, alpha } from '../styles/theme';
 
 const routes = [
   {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   filterText: {
     color: colors.secondary,
-    fontWeight: '800'
+    fontWeight: '700'
   },
   filterTextActive: {
     color: colors.white
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   routeCode: {
     color: colors.primaryDark,
     fontSize: 12,
-    fontWeight: '900'
+    fontWeight: '700'
   },
   routeDetail: {
     alignItems: 'center',
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   routeName: {
     color: colors.text,
     fontSize: 17,
-    fontWeight: '900',
+    fontWeight: '700',
     marginTop: 3
   },
   routeTop: {
@@ -192,13 +192,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: colors.primaryDark,
     fontSize: 12,
-    fontWeight: '900',
+    fontWeight: '700',
     overflow: 'hidden',
     paddingHorizontal: 9,
     paddingVertical: 5
   },
   subtitle: {
-    color: 'rgba(255,255,255,0.86)',
+    color: alpha.white86,
     fontSize: 14,
     lineHeight: 20,
     marginTop: 7,
@@ -207,6 +207,6 @@ const styles = StyleSheet.create({
   title: {
     color: colors.white,
     fontSize: 25,
-    fontWeight: '900'
+    fontWeight: '700'
   }
 });

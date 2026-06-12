@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     color: colors.text,
     fontSize: 17,
-    fontWeight: '900'
+    fontWeight: '700'
   },
   cardUnread: {
     borderLeftColor: colors.accent,
@@ -195,12 +195,12 @@ const styles = StyleSheet.create({
   },
   readButtonText: {
     color: colors.white,
-    fontWeight: '800'
+    fontWeight: '700'
   },
   readLabel: {
     color: colors.primaryDark,
     fontSize: 13,
-    fontWeight: '800',
+    fontWeight: '700',
     marginTop: 12
   },
   screen: {
@@ -215,6 +215,6 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontSize: 24,
-    fontWeight: '900'
+    fontWeight: '700'
   }
 });

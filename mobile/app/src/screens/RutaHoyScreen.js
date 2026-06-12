@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, shadows } from '../styles/theme';
+import { colors, shadows, alpha } from '../styles/theme';
 
 const routeStops = [
   { time: '06:30', place: 'Callejon Retiro', status: 'Inicio' },
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   eyebrow: {
-    color: 'rgba(255,255,255,0.82)',
+    color: alpha.white82,
     fontSize: 13,
-    fontWeight: '800'
+    fontWeight: '700'
   },
   hero: {
     alignItems: 'center',
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     color: colors.primaryDark,
     flex: 1,
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: '700',
     lineHeight: 20,
     marginLeft: 10
   },
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     color: colors.white,
-    fontWeight: '900'
+    fontWeight: '700'
   },
   screen: {
     backgroundColor: colors.background,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: colors.text,
     fontSize: 20,
-    fontWeight: '900',
+    fontWeight: '700',
     marginBottom: 14,
     marginTop: 22
   },
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   stopPlace: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: '900',
+    fontWeight: '700',
     marginTop: 3
   },
   stopRail: {
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: colors.primaryDark,
     fontSize: 12,
-    fontWeight: '900',
+    fontWeight: '700',
     overflow: 'hidden',
     paddingHorizontal: 9,
     paddingVertical: 5
@@ -199,10 +199,10 @@ const styles = StyleSheet.create({
   stopTime: {
     color: colors.secondary,
     fontSize: 13,
-    fontWeight: '800'
+    fontWeight: '700'
   },
   subtitle: {
-    color: 'rgba(255,255,255,0.86)',
+    color: alpha.white86,
     fontSize: 14,
     lineHeight: 20,
     marginTop: 6
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   summaryValue: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: '900',
+    fontWeight: '700',
     marginTop: 3
   },
   timeline: {
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.white,
     fontSize: 25,
-    fontWeight: '900',
+    fontWeight: '700',
     marginTop: 3
   }
 });
