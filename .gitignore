@@ -49,3 +49,7 @@ web-build/
 .project
 .classpath
 .settings/
+
+# Archivos temporales y duplicados
+AppEcoQosqo-actualizado/
+diagrama-*.svg
