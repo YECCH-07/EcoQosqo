@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1050" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7a1636"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2563eb"/>
+    </marker>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4a001f"/>
+      <stop offset="100%" stop-color="#7a1636"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0F6B4F"/>
+      <stop offset="100%" stop-color="#15855F"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="1400" height="1050" fill="#f8f6f7"/>
+
+  <!-- Título -->
+  <rect x="0" y="0" width="1400" height="60" fill="url(#headerGrad)"/>
+  <text x="700" y="40" text-anchor="middle" fill="#fff" font-size="24" font-weight="700">EcoQosqo — Diagrama de Arquitectura y Flujo</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 1: USUARIOS -->
+  <!-- ============================================ -->
+  <text x="40" y="100" font-size="16" font-weight="700" fill="#4a001f">👤 USUARIOS Y ROLES</text>
+
+  <!-- ADMIN -->
+  <rect x="30" y="115" width="200" height="55" rx="10" fill="#4a001f" filter="url(#shadow)"/>
+  <text x="130" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ADMIN / ADMINISTRADOR</text>
+  <text x="130" y="156" text-anchor="middle" fill="#fecdd3" font-size="10">Panel Web · Acceso Total</text>
+
+  <!-- RECURSOS -->
+  <rect x="250" y="115" width="200" height="55" rx="10" fill="#7a1636" filter="url(#shadow)"/>
+  <text x="350" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">RECURSOS</text>
+  <text x="350" y="156" text-anchor="middle" fill="#fecdd3" font-size="10">Gestión de Personal</text>
+
+  <!-- MAQUINARIAS -->
+  <rect x="470" y="115" width="200" height="55" rx="10" fill="#7a1636" filter="url(#shadow)"/>
+  <text x="570" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">MAQUINARIAS</text>
+  <text x="570" y="156" text-anchor="middle" fill="#fecdd3" font-size="10">Gestión de Unidades</text>
+
+  <!-- OPERADOR -->
+  <rect x="690" y="115" width="200" height="55" rx="10" fill="#7a1636" filter="url(#shadow)"/>
+  <text x="790" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">OPERADOR</text>
+  <text x="790" y="156" text-anchor="middle" fill="#fecdd3" font-size="10">Rutas y Equipos</text>
+
+  <!-- OP NOTIF -->
+  <rect x="910" y="115" width="220" height="55" rx="10" fill="#7a1636" filter="url(#shadow)"/>
+  <text x="1020" y="138" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">OPERADOR DE NOTIFIC.</text>
+  <text x="1020" y="156" text-anchor="middle" fill="#fecdd3" font-size="10">Libro de Reclamos</text>
+
+  <!-- MÓVIL -->
+  <rect x="1150" y="115" width="200" height="55" rx="10" fill="url(#greenGrad)" filter="url(#shadow)"/>
+  <text x="1250" y="138" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">CIUDADANO / EMPRESAS</text>
+  <text x="1250" y="156" text-anchor="middle" fill="#D4E157" font-size="10">App Móvil Expo</text>
+
+  <!-- Flecha usuarios → frontend -->
+  <line x1="700" y1="170" x2="700" y2="200" stroke="#7a1636" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 2: FRONTEND -->
+  <!-- ============================================ -->
+  <text x="40" y="230" font-size="16" font-weight="700" fill="#4a001f">💻 FRONTEND — React + Vite (puerto 5173)</text>
+
+  <!-- Splash -->
+  <rect x="30" y="245" width="180" height="65" rx="8" fill="#fff" stroke="#7a1636" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="120" y="270" text-anchor="middle" fill="#4a001f" font-size="13" font-weight="700">SplashScreen</text>
+  <text x="120" y="288" text-anchor="middle" fill="#7a1636" font-size="10">Logo + EcoQosqo</text>
+  <text x="120" y="302" text-anchor="middle" fill="#8a6d78" font-size="9">2.8s → auto fade</text>
+
+  <!-- Flecha -->
+  <line x1="210" y1="277" x2="240" y2="277" stroke="#7a1636" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Login -->
+  <rect x="245" y="245" width="180" height="65" rx="8" fill="#fff" stroke="#7a1636" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="335" y="270" text-anchor="middle" fill="#4a001f" font-size="13" font-weight="700">LoginForm</text>
+  <text x="335" y="288" text-anchor="middle" fill="#7a1636" font-size="10">user + password + JWT</text>
+  <text x="335" y="302" text-anchor="middle" fill="#8a6d78" font-size="9">Rate limit 5 intentos</text>
+
+  <!-- Flecha -->
+  <line x1="425" y1="277" x2="455" y2="277" stroke="#7a1636" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Panel -->
+  <rect x="460" y="240" width="420" height="135" rx="8" fill="#fff" stroke="#7a1636" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="670" y="262" text-anchor="middle" fill="#4a001f" font-size="14" font-weight="700">AdminPanel (App.jsx)</text>
+  <text x="670" y="280" text-anchor="middle" fill="#5a3d48" font-size="11">Sidebar + Contenido por módulo</text>
+  <line x1="480" y1="290" x2="860" y2="290" stroke="#e8dee2" stroke-width="1"/>
+  <text x="520" y="306" fill="#7a1636" font-size="10" font-weight="600">📊 Dashboard</text>
+  <text x="520" y="322" fill="#7a1636" font-size="10" font-weight="600">🏛️ OrganigramaManager</text>
+  <text x="700" y="306" fill="#4a001f" font-size="10">👥 PersonalManager</text>
+  <text x="700" y="322" fill="#5a3d48" font-size="9">(readOnly si ADMIN)</text>
+  <text x="520" y="338" fill="#5a3d48" font-size="10">🚛 Unidades · 🛣️ Rutas · 📖 Reclamos</text>
+  <text x="520" y="354" fill="#5a3d48" font-size="9">Módulos placeholder — solo vista para ADMIN</text>
+
+  <!-- Flecha Panel → Backend -->
+  <line x1="670" y1="375" x2="670" y2="420" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="690" y="400" fill="#2563eb" font-size="10">Axios + JWT Bearer Token</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 3: BACKEND -->
+  <!-- ============================================ -->
+  <text x="40" y="450" font-size="16" font-weight="700" fill="#2563eb">🔧 BACKEND — Express.js (puerto 5001)</text>
+
+  <!-- Server -->
+  <rect x="30" y="465" width="250" height="80" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="155" y="488" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="700">server.js</text>
+  <text x="155" y="506" text-anchor="middle" fill="#555" font-size="10">CORS · bodyParser 5mb</text>
+  <text x="155" y="522" text-anchor="middle" fill="#555" font-size="10">Trust Proxy · Error Handler</text>
+  <text x="155" y="538" text-anchor="middle" fill="#555" font-size="10">Rate Limiter Login</text>
+
+  <!-- Middleware -->
+  <rect x="310" y="465" width="200" height="80" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="410" y="488" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="700">auth.js (JWT)</text>
+  <text x="410" y="506" text-anchor="middle" fill="#555" font-size="10">authRequired</text>
+  <text x="410" y="522" text-anchor="middle" fill="#555" font-size="10">Verifica Bearer Token</text>
+  <text x="410" y="538" text-anchor="middle" fill="#555" font-size="10">Protege rutas CRUD</text>
+
+  <!-- Rutas -->
+  <rect x="540" y="465" width="300" height="80" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="690" y="488" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="700">Rutas REST</text>
+  <text x="690" y="506" text-anchor="middle" fill="#555" font-size="10">POST /api/login</text>
+  <text x="690" y="522" text-anchor="middle" fill="#555" font-size="10">CRUD /api/personal · /tipos-personal</text>
+  <text x="690" y="538" text-anchor="middle" fill="#555" font-size="10">CRUD /api/unidades-organicas (árbol)</text>
+
+  <!-- Controladores -->
+  <rect x="870" y="465" width="240" height="80" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="990" y="488" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="700">Controladores</text>
+  <text x="990" y="506" text-anchor="middle" fill="#555" font-size="10">authController</text>
+  <text x="990" y="522" text-anchor="middle" fill="#555" font-size="10">personalController</text>
+  <text x="990" y="538" text-anchor="middle" fill="#555" font-size="10">unidadOrganicaController</text>
+
+  <!-- Modelos -->
+  <rect x="1140" y="465" width="220" height="80" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1250" y="488" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="700">Modelos</text>
+  <text x="1250" y="506" text-anchor="middle" fill="#555" font-size="10">userModel · personalModel</text>
+  <text x="1250" y="522" text-anchor="middle" fill="#555" font-size="10">unidadOrganicaModel</text>
+  <text x="1250" y="538" text-anchor="middle" fill="#555" font-size="10">Pool MySQL compartido</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 4: BASE DE DATOS -->
+  <!-- ============================================ -->
+  <text x="40" y="590" font-size="16" font-weight="700" fill="#0F6B4F">🗄️ BASE DE DATOS — MySQL (puerto 3306)</text>
+
+  <!-- Tablas -->
+  <rect x="30" y="605" width="230" height="95" rx="8" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="145" y="625" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">usuarios</text>
+  <text x="145" y="643" text-anchor="middle" fill="#555" font-size="10">id, nombre, usuario, correo</text>
+  <text x="145" y="658" text-anchor="middle" fill="#555" font-size="10">password_hash, activo, rol_id</text>
+  <text x="145" y="678" text-anchor="middle" fill="#8A9585" font-size="9">5 registros (admin, recursos...)</text>
+
+  <rect x="280" y="605" width="230" height="95" rx="8" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="395" y="625" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">roles</text>
+  <text x="395" y="643" text-anchor="middle" fill="#555" font-size="10">id, nombre</text>
+  <text x="395" y="658" text-anchor="middle" fill="#555" font-size="10">ADMIN, CIUDADANO, MAQUINARIAS</text>
+  <text x="395" y="673" text-anchor="middle" fill="#555" font-size="10">OPERADOR, OP.NOTIF, RECURSOS</text>
+  <text x="395" y="688" text-anchor="middle" fill="#8A9585" font-size="9">ADMINISTRADOR, EMPRESAS</text>
+
+  <rect x="530" y="605" width="250" height="95" rx="8" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="655" y="625" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">personal</text>
+  <text x="655" y="643" text-anchor="middle" fill="#555" font-size="10">nombres, apellidos, dni, telefono</text>
+  <text x="655" y="658" text-anchor="middle" fill="#555" font-size="10">tipo_id, unidad_organica_id</text>
+  <text x="655" y="673" text-anchor="middle" fill="#555" font-size="10">régimen, condición, nivel (Perú)</text>
+  <text x="655" y="688" text-anchor="middle" fill="#8A9585" font-size="9">6 registros</text>
+
+  <rect x="800" y="605" width="270" height="95" rx="8" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="935" y="625" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">unidades_organicas</text>
+  <text x="935" y="643" text-anchor="middle" fill="#555" font-size="10">id, nombre, sigla, padre_id</text>
+  <text x="935" y="658" text-anchor="middle" fill="#555" font-size="10">nivel (0=Alta, 1=Ger, 2=Sub)</text>
+  <text x="935" y="673" text-anchor="middle" fill="#555" font-size="10">orden, activo</text>
+  <text x="935" y="688" text-anchor="middle" fill="#8A9585" font-size="9">8 registros · Árbol jerárquico</text>
+
+  <rect x="1090" y="605" width="270" height="95" rx="8" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1225" y="625" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">tipos_personal</text>
+  <text x="1225" y="643" text-anchor="middle" fill="#555" font-size="10">id, nombre</text>
+  <text x="1225" y="658" text-anchor="middle" fill="#555" font-size="10">Conductor, Ayudante, Limpieza</text>
+  <text x="1225" y="673" text-anchor="middle" fill="#555" font-size="10">Recolector, Administrativo</text>
+  <text x="1225" y="688" text-anchor="middle" fill="#8A9585" font-size="9">Operario, Otro, Supervisor</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 5: FLUJO DE LOGIN -->
+  <!-- ============================================ -->
+  <text x="40" y="740" font-size="16" font-weight="700" fill="#4a001f">🔐 FLUJO DE AUTENTICACIÓN</text>
+
+  <rect x="30" y="758" width="1340" height="55" rx="8" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#shadow)"/>
+  <text x="80" y="785" fill="#333" font-size="11">1. Usuario ingresa credenciales</text>
+  <text x="320" y="785" fill="#7a1636" font-size="14">→</text>
+  <text x="360" y="785" fill="#333" font-size="11">2. POST /api/login</text>
+  <text x="560" y="785" fill="#7a1636" font-size="14">→</text>
+  <text x="600" y="785" fill="#333" font-size="11">3. Rate limiter (5 intentos/15min)</text>
+  <text x="860" y="785" fill="#7a1636" font-size="14">→</text>
+  <text x="900" y="785" fill="#333" font-size="11">4. findByUsername (MySQL)</text>
+  <text x="1130" y="785" fill="#7a1636" font-size="14">→</text>
+  <text x="1170" y="785" fill="#333" font-size="11">5. bcrypt.compare()</text>
+  <text x="160" y="803" fill="#7a1636" font-size="14">→</text>
+  <text x="200" y="803" fill="#333" font-size="11">6. Firma JWT (1h u 8h si "recordarme")</text>
+  <text x="500" y="803" fill="#7a1636" font-size="14">→</text>
+  <text x="540" y="803" fill="#333" font-size="11">7. Guarda token en localStorage</text>
+  <text x="780" y="803" fill="#7a1636" font-size="14">→</text>
+  <text x="820" y="803" fill="#333" font-size="11">8. App.jsx: isAuthenticated=true → AdminPanel</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 6: FLUJO DE NAVEGACIÓN -->
+  <!-- ============================================ -->
+  <text x="40" y="840" font-size="16" font-weight="700" fill="#4a001f">🧭 FLUJO DE NAVEGACIÓN — ORGANIGRAMA</text>
+
+  <rect x="30" y="858" width="1340" height="55" rx="8" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#shadow)"/>
+  <text x="60" y="883" fill="#333" font-size="11">1. Sidebar: "Organigrama"</text>
+  <text x="260" y="883" fill="#7a1636" font-size="14">→</text>
+  <text x="290" y="883" fill="#333" font-size="11">2. GET /raiz/hijos → Cards</text>
+  <text x="490" y="883" fill="#7a1636" font-size="14">→</text>
+  <text x="520" y="883" fill="#333" font-size="11">3. Clic en card → navigate(id)</text>
+  <text x="730" y="883" fill="#7a1636" font-size="14">→</text>
+  <text x="760" y="883" fill="#333" font-size="11">4. Breadcrumb + hijos de esa unidad</text>
+  <text x="990" y="883" fill="#7a1636" font-size="14">→</text>
+  <text x="1020" y="883" fill="#333" font-size="11">5. Conteo recursivo (directo + sub)</text>
+  <text x="160" y="903" fill="#7a1636" font-size="14">→</text>
+  <text x="190" y="903" fill="#333" font-size="11">6. Click "+" → Nueva Subunidad (POST /api/unidades-organicas)</text>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 7: FLUJO DE PERSONAL -->
+  <!-- ============================================ -->
+  <text x="40" y="945" font-size="16" font-weight="700" fill="#4a001f">👥 FLUJO DE GESTIÓN DE PERSONAL</text>
+
+  <rect x="30" y="963" width="1340" height="55" rx="8" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#shadow)"/>
+  <text x="60" y="988" fill="#333" font-size="11">1. Sidebar: "Gestión Personal"</text>
+  <text x="280" y="988" fill="#7a1636" font-size="14">→</text>
+  <text x="310" y="988" fill="#333" font-size="11">2. Navega organigrama → elige unidad</text>
+  <text x="550" y="988" fill="#7a1636" font-size="14">→</text>
+  <text x="580" y="988" fill="#333" font-size="11">3. "Nuevo Personal" (si no es readOnly)</text>
+  <text x="840" y="988" fill="#7a1636" font-size="14">→</text>
+  <text x="870" y="988" fill="#333" font-size="11">4. Form: busca unidad + datos Perú</text>
+  <text x="1100" y="988" fill="#7a1636" font-size="14">→</text>
+  <text x="1130" y="988" fill="#333" font-size="11">5. POST /api/personal → tabla</text>
+</svg>

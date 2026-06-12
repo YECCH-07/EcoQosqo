@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1400" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="arrow-w" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#fff"/></marker>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7a1636"/></marker>
+    <marker id="arrow-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0F6B4F"/></marker>
+    <marker id="arrow-r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#dc2626"/></marker>
+    <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/></filter>
+    <filter id="sh2"><feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.12"/></filter>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="1600" height="1400" fill="#f9f7f8"/>
+
+  <!-- TÍTULO -->
+  <rect x="0" y="0" width="1600" height="50" fill="#4a001f"/>
+  <text x="800" y="33" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">EcoQosqo — Flujo por Usuario: ¿Qué ve cada rol al iniciar sesión?</text>
+
+  <!-- ============================================ -->
+  <!-- LOGIN COMÚN -->
+  <!-- ============================================ -->
+  <text x="30" y="80" font-size="14" font-weight="700" fill="#4a001f">🔐 PUNTO DE ENTRADA ÚNICO (WEB)</text>
+
+  <rect x="30" y="95" width="1540" height="50" rx="8" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="160" y="118" text-anchor="middle" fill="#333" font-size="12">🌿 SplashScreen</text>
+  <text x="310" y="118" text-anchor="middle" fill="#4a001f" font-size="12">2.8s →</text>
+  <text x="440" y="118" text-anchor="middle" fill="#333" font-size="12">LoginForm</text>
+  <text x="590" y="118" text-anchor="middle" fill="#4a001f" font-size="12">POST /api/login →</text>
+  <text x="760" y="118" text-anchor="middle" fill="#333" font-size="12">authController</text>
+  <text x="930" y="118" text-anchor="middle" fill="#4a001f" font-size="12">→ findByUsername → bcrypt →</text>
+  <text x="1160" y="118" text-anchor="middle" fill="#333" font-size="12">JWT firmado</text>
+  <text x="1310" y="118" text-anchor="middle" fill="#4a001f" font-size="12">→ localStorage</text>
+  <text x="1480" y="118" text-anchor="middle" fill="#0F6B4F" font-size="12">→ AdminPanel</text>
+
+  <!-- ============================================ -->
+  <!-- ADMIN -->
+  <!-- ============================================ -->
+  <rect x="30" y="165" width="1540" height="260" rx="10" fill="#fff" stroke="#4a001f" stroke-width="1.5" filter="url(#sh2)"/>
+  <rect x="30" y="165" width="1540" height="35" rx="10" fill="#4a001f"/>
+  <rect x="30" y="185" width="1540" height="15" fill="#4a001f"/>
+  <text x="50" y="188" fill="#fff" font-size="14" font-weight="700">👑 ADMIN / ADMINISTRADOR — Acceso Total (solo lectura en módulos operativos)</text>
+
+  <!-- Credencial -->
+  <rect x="50" y="210" width="180" height="40" rx="6" fill="#f3e8ec"/>
+  <text x="140" y="235" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">admin / admin123</text>
+
+  <!-- Sidebar module list -->
+  <text x="280" y="235" fill="#4a001f" font-size="11" font-weight="700">Sidebar:</text>
+
+  <rect x="370" y="215" width="140" height="22" rx="4" fill="#4a001f"/>
+  <text x="440" y="231" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">📊 Dashboard</text>
+
+  <rect x="520" y="215" width="140" height="22" rx="4" fill="#4a001f"/>
+  <text x="590" y="231" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">🏛️ Organigrama</text>
+
+  <rect x="670" y="215" width="150" height="22" rx="4" fill="#f3e8ec" stroke="#7a1636" stroke-width="1"/>
+  <text x="745" y="231" text-anchor="middle" fill="#7a1636" font-size="10">👥 Personal [Vista]</text>
+
+  <rect x="830" y="215" width="140" height="22" rx="4" fill="#f3e8ec" stroke="#7a1636" stroke-width="1"/>
+  <text x="900" y="231" text-anchor="middle" fill="#7a1636" font-size="10">🚛 Unidades [Vista]</text>
+
+  <rect x="980" y="215" width="140" height="22" rx="4" fill="#f3e8ec" stroke="#7a1636" stroke-width="1"/>
+  <text x="1050" y="231" text-anchor="middle" fill="#7a1636" font-size="10">🛣️ Rutas [Vista]</text>
+
+  <rect x="1130" y="215" width="140" height="22" rx="4" fill="#f3e8ec" stroke="#7a1636" stroke-width="1"/>
+  <text x="1200" y="231" text-anchor="middle" fill="#7a1636" font-size="10">📖 Reclamos [Vista]</text>
+
+  <rect x="1280" y="215" width="270" height="22" rx="4" fill="#FFF3CD"/>
+  <text x="1415" y="231" text-anchor="middle" fill="#856404" font-size="10">⚠️ readOnly=true en operativos</text>
+
+  <!-- Tabla de permisos admin -->
+  <line x1="50" y1="260" x2="1520" y2="260" stroke="#e8dee2" stroke-width="1"/>
+  <text x="50" y="280" fill="#7a1636" font-size="11" font-weight="700">Permisos:</text>
+
+  <!-- Organigrama -->
+  <rect x="50" y="292" width="340" height="120" rx="6" fill="#f0f9f4" stroke="#0F6B4F" stroke-width="1"/>
+  <text x="220" y="312" text-anchor="middle" fill="#0F6B4F" font-size="11" font-weight="700">🏛️ Organigrama (EDITABLE)</text>
+  <text x="60" y="330" fill="#333" font-size="10">✅ Crear/editar/eliminar unidades</text>
+  <text x="60" y="346" fill="#333" font-size="10">✅ Navegar árbol jerárquico</text>
+  <text x="60" y="362" fill="#333" font-size="10">✅ Ver conteo de personal por unidad</text>
+  <text x="60" y="378" fill="#333" font-size="10">✅ Buscar unidades por nombre</text>
+  <text x="60" y="394" fill="#333" font-size="10">✅ Breadcrumb clickable</text>
+
+  <!-- Personal Vista -->
+  <rect x="410" y="292" width="340" height="120" rx="6" fill="#fffbf0" stroke="#e6a817" stroke-width="1"/>
+  <text x="580" y="312" text-anchor="middle" fill="#856404" font-size="11" font-weight="700">👥 Personal (SOLO VISTA)</text>
+  <text x="420" y="330" fill="#333" font-size="10">👁️ Ver tabla de personal</text>
+  <text x="420" y="346" fill="#333" font-size="10">👁️ Navegar organigrama</text>
+  <text x="420" y="362" fill="#333" font-size="10">👁️ Buscar personas por nombre/DNI</text>
+  <text x="420" y="378" fill="#dc2626" font-size="10">❌ NO puede crear/editar/eliminar</text>
+  <text x="420" y="394" fill="#dc2626" font-size="10">❌ Sin botón "Nuevo Personal"</text>
+
+  <!-- Otros módulos vista -->
+  <rect x="770" y="292" width="340" height="120" rx="6" fill="#f8f8f8" stroke="#ccc" stroke-width="1"/>
+  <text x="940" y="312" text-anchor="middle" fill="#666" font-size="11" font-weight="700">🚛🛣️📖 Otros (SOLO VISTA)</text>
+  <text x="780" y="330" fill="#333" font-size="10">👁️ Ver Unidades (placeholder)</text>
+  <text x="780" y="346" fill="#333" font-size="10">👁️ Ver Rutas y Equipos (placeholder)</text>
+  <text x="780" y="362" fill="#333" font-size="10">👁️ Ver Libro de Reclamos (placeholder)</text>
+  <text x="780" y="378" fill="#666" font-size="10">⏳ Módulos pendientes de implementar</text>
+
+  <!-- ============================================ -->
+  <!-- RECURSOS -->
+  <!-- ============================================ -->
+  <rect x="30" y="445" width="1540" height="240" rx="10" fill="#fff" stroke="#7a1636" stroke-width="1.5" filter="url(#sh2)"/>
+  <rect x="30" y="445" width="1540" height="35" rx="10" fill="#7a1636"/>
+  <rect x="30" y="465" width="1540" height="15" fill="#7a1636"/>
+  <text x="50" y="468" fill="#fff" font-size="14" font-weight="700">👥 RECURSOS — Jefe de Recursos Humanos</text>
+
+  <rect x="50" y="490" width="200" height="40" rx="6" fill="#f3e8ec"/>
+  <text x="150" y="515" text-anchor="middle" fill="#7a1636" font-size="11" font-weight="700">recursos / recursos123</text>
+
+  <text x="290" y="515" fill="#7a1636" font-size="11" font-weight="700">Sidebar:</text>
+
+  <rect x="370" y="498" width="170" height="22" rx="4" fill="#7a1636"/>
+  <text x="455" y="514" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">👥 Gestión de Personal</text>
+
+  <text x="570" y="515" fill="#7a1636" font-size="10">(único módulo visible)</text>
+
+  <!-- Flujo RECURSOS -->
+  <line x1="50" y1="545" x2="1520" y2="545" stroke="#e8dee2" stroke-width="1"/>
+
+  <!-- Paso 1 -->
+  <rect x="50" y="558" width="220" height="110" rx="6" fill="#f9f7f8" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="160" y="578" text-anchor="middle" fill="#7a1636" font-size="12" font-weight="700">Paso 1: Navegar</text>
+  <text x="60" y="596" fill="#333" font-size="10">🧭 Navegador del organigrama</text>
+  <text x="60" y="612" fill="#333" font-size="10">📂 Solo lectura: ve unidades</text>
+  <text x="60" y="628" fill="#333" font-size="10">🔍 Busca unidad por nombre</text>
+  <text x="60" y="644" fill="#333" font-size="10">📍 Breadcrumb clickable</text>
+  <text x="60" y="660" fill="#333" font-size="10">👁️ Cards con conteo de personal</text>
+
+  <text x="290" y="610" fill="#7a1636" font-size="18">→</text>
+
+  <!-- Paso 2 -->
+  <rect x="320" y="558" width="220" height="110" rx="6" fill="#f9f7f8" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="430" y="578" text-anchor="middle" fill="#7a1636" font-size="12" font-weight="700">Paso 2: Seleccionar</text>
+  <text x="330" y="596" fill="#333" font-size="10">🎯 Clic en unidad destino</text>
+  <text x="330" y="612" fill="#333" font-size="10">📊 Ve tabla de personal</text>
+  <text x="330" y="628" fill="#333" font-size="10">👤 Solo esa unidad</text>
+  <text x="330" y="644" fill="#333" font-size="10">📋 Muestra: nombres, DNI</text>
+  <text x="330" y="660" fill="#333" font-size="10">🏷️ régimen, condición, nivel</text>
+
+  <text x="560" y="610" fill="#7a1636" font-size="18">→</text>
+
+  <!-- Paso 3 -->
+  <rect x="590" y="558" width="280" height="110" rx="6" fill="#f0f9f4" stroke="#0F6B4F" stroke-width="1" filter="url(#sh)"/>
+  <text x="730" y="578" text-anchor="middle" fill="#0F6B4F" font-size="12" font-weight="700">Paso 3: Crear/Editar</text>
+  <text x="600" y="596" fill="#333" font-size="10">➕ "Nuevo Personal" → formulario</text>
+  <text x="600" y="612" fill="#333" font-size="10">3 secciones: Datos Personales</text>
+  <text x="600" y="628" fill="#333" font-size="10">→ Ubicación Orgánica → Datos Laborales</text>
+  <text x="600" y="644" fill="#333" font-size="10">Campos Perú: régimen, condición, nivel</text>
+  <text x="600" y="660" fill="#333" font-size="10">🔍 Buscador de unidad en el form</text>
+
+  <text x="890" y="610" fill="#7a1636" font-size="18">→</text>
+
+  <!-- Paso 4 -->
+  <rect x="920" y="558" width="220" height="110" rx="6" fill="#f9f7f8" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="1030" y="578" text-anchor="middle" fill="#7a1636" font-size="12" font-weight="700">Paso 4: Gestionar</text>
+  <text x="930" y="596" fill="#333" font-size="10">✏️ Editar personal existente</text>
+  <text x="930" y="612" fill="#333" font-size="10">🗑️ Eliminar (con confirmación)</text>
+  <text x="930" y="628" fill="#333" font-size="10">🔍 Buscar persona global</text>
+  <text x="930" y="644" fill="#333" font-size="10">📍 Salta a la unidad donde está</text>
+  <text x="930" y="660" fill="#333" font-size="10">➕ Añadir tipos de cargo</text>
+
+  <!-- ============================================ -->
+  <!-- MAQUINARIAS / OPERADOR / OP NOTIF -->
+  <!-- ============================================ -->
+  <rect x="30" y="705" width="1540" height="175" rx="10" fill="#fff" stroke="#c4b5bc" stroke-width="1.5" filter="url(#sh2)"/>
+  <rect x="30" y="705" width="1540" height="35" rx="10" fill="#8a6d78"/>
+  <rect x="30" y="725" width="1540" height="15" fill="#8a6d78"/>
+  <text x="50" y="728" fill="#fff" font-size="14" font-weight="700">🔧 ROLES OPERATIVOS (pendientes de crear usuarios de prueba)</text>
+
+  <!-- MAQUINARIAS -->
+  <rect x="50" y="752" width="460" height="115" rx="6" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="280" y="772" text-anchor="middle" fill="#4a001f" font-size="12" font-weight="700">🚛 MAQUINARIAS</text>
+  <text x="280" y="790" text-anchor="middle" fill="#8a6d78" font-size="10">Sin usuario de prueba aún</text>
+  <line x1="60" y1="798" x2="500" y2="798" stroke="#e8dee2" stroke-width="1"/>
+  <text x="60" y="814" fill="#333" font-size="10">Sidebar: Gestión de Unidades</text>
+  <text x="60" y="830" fill="#333" font-size="10">CRUD: crear, editar, eliminar unidades (camiones, maquinaria)</text>
+  <text x="60" y="846" fill="#333" font-size="10">Estados: operativo / mantenimiento / inactivo</text>
+  <text x="60" y="862" fill="#8a6d78" font-size="10">⏳ Módulo placeholder — implementar en Paso 2</text>
+
+  <!-- OPERADOR -->
+  <rect x="540" y="752" width="480" height="115" rx="6" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="780" y="772" text-anchor="middle" fill="#4a001f" font-size="12" font-weight="700">🛣️ OPERADOR</text>
+  <text x="780" y="790" text-anchor="middle" fill="#8a6d78" font-size="10">Sin usuario de prueba aún</text>
+  <line x1="550" y1="798" x2="1010" y2="798" stroke="#e8dee2" stroke-width="1"/>
+  <text x="550" y="814" fill="#333" font-size="10">Sidebar: Gestión de Rutas y Equipos</text>
+  <text x="550" y="830" fill="#333" font-size="10">Asignar unidad + conductor + ayudante a ruta</text>
+  <text x="550" y="846" fill="#333" font-size="10">Depende de: Unidades (MAQUINARIAS) y Personal (RECURSOS)</text>
+  <text x="550" y="862" fill="#8a6d78" font-size="10">⏳ Módulo placeholder — implementar en Paso 3</text>
+
+  <!-- OP NOTIFICACIONES -->
+  <rect x="1050" y="752" width="500" height="115" rx="6" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+  <text x="1300" y="772" text-anchor="middle" fill="#4a001f" font-size="12" font-weight="700">📖 OPERADOR DE NOTIFICACIONES</text>
+  <text x="1300" y="790" text-anchor="middle" fill="#8a6d78" font-size="10">Sin usuario de prueba aún</text>
+  <line x1="1060" y1="798" x2="1540" y2="798" stroke="#e8dee2" stroke-width="1"/>
+  <text x="1060" y="814" fill="#333" font-size="10">Sidebar: Gestión de Libro de Reclamos</text>
+  <text x="1060" y="830" fill="#333" font-size="10">Ver reclamos, cambiar estado, registrar atención</text>
+  <text x="1060" y="846" fill="#333" font-size="10">Estados: pendiente / en proceso / atendido</text>
+  <text x="1060" y="862" fill="#8a6d78" font-size="10">⏳ Módulo placeholder — implementar en Paso 4</text>
+
+  <!-- ============================================ -->
+  <!-- MÓVIL -->
+  <!-- ============================================ -->
+  <rect x="30" y="900" width="1540" height="235" rx="10" fill="#fff" stroke="#0F6B4F" stroke-width="1.5" filter="url(#sh2)"/>
+  <rect x="30" y="900" width="1540" height="35" rx="10" fill="#0F6B4F"/>
+  <rect x="30" y="920" width="1540" height="15" fill="#0F6B4F"/>
+  <text x="50" y="923" fill="#fff" font-size="14" font-weight="700">📱 APP MÓVIL — CIUDADANO / EMPRESAS (Expo + React Native, puerto 5000)</text>
+
+  <rect x="50" y="945" width="200" height="40" rx="6" fill="#e6f2ed"/>
+  <text x="150" y="963" text-anchor="middle" fill="#0F6B4F" font-size="10" font-weight="700">ciudadano@ecoqosqo.pe</text>
+  <text x="150" y="978" text-anchor="middle" fill="#0F6B4F" font-size="10" font-weight="700">empresa@ecoqosqo.pe</text>
+
+  <line x1="270" y1="945" x2="270" y2="1040" stroke="#0F6B4F" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Flujo móvil -->
+  <rect x="290" y="945" width="280" height="85" rx="6" fill="#f0f9f4" stroke="#0F6B4F" stroke-width="1" filter="url(#sh)"/>
+  <text x="430" y="965" text-anchor="middle" fill="#0F6B4F" font-size="11" font-weight="700">API Móvil (Express puerto 5000)</text>
+  <text x="300" y="982" fill="#333" font-size="10">POST /api/auth/login</text>
+  <text x="300" y="998" fill="#333" font-size="10">Solo permite: CIUDADANO, EMPRESAS</text>
+  <text x="300" y="1014" fill="#333" font-size="10">JWT 8h · Misma BD software</text>
+
+  <text x="590" y="985" fill="#0F6B4F" font-size="18">→</text>
+
+  <rect x="620" y="945" width="300" height="85" rx="6" fill="#f0f9f4" stroke="#0F6B4F" stroke-width="1" filter="url(#sh)"/>
+  <text x="770" y="965" text-anchor="middle" fill="#0F6B4F" font-size="11" font-weight="700">App Expo (React Native)</text>
+  <text x="630" y="982" fill="#333" font-size="10">SplashScreen → LoginScreen</text>
+  <text x="630" y="998" fill="#333" font-size="10">DashboardScreen (4 módulos)</text>
+  <text x="630" y="1014" fill="#333" font-size="10">AsyncStorage para token persistente</text>
+
+  <text x="940" y="985" fill="#0F6B4F" font-size="18">→</text>
+
+  <rect x="970" y="945" width="580" height="85" rx="6" fill="#f0f9f4" stroke="#0F6B4F" stroke-width="1" filter="url(#sh)"/>
+  <text x="1260" y="965" text-anchor="middle" fill="#0F6B4F" font-size="11" font-weight="700">Módulos de la App (todos placeholder)</text>
+  <text x="980" y="982" fill="#333" font-size="10">📅 Horarios — Vista inicial del módulo</text>
+  <text x="980" y="998" fill="#333" font-size="10">🔔 Notificaciones — Centro de avisos</text>
+  <text x="980" y="1014" fill="#333" font-size="10">🧭 Seguimiento — Tracking en tiempo real del camión</text>
+  <text x="1260" y="982" fill="#333" font-size="10">👤 Perfil — Datos de cuenta</text>
+
+  <!-- Acceso denegado -->
+  <rect x="50" y="1060" width="250" height="60" rx="6" fill="#FDEDEC" stroke="#dc2626" stroke-width="1"/>
+  <text x="175" y="1082" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="700">⛔ ADMIN en app móvil</text>
+  <text x="175" y="1100" text-anchor="middle" fill="#dc2626" font-size="10">POST /api/auth/login → 403</text>
+  <text x="175" y="1114" text-anchor="middle" fill="#dc2626" font-size="10">"No tiene acceso al aplicativo móvil"</text>
+
+  <rect x="320" y="1060" width="250" height="60" rx="6" fill="#FDEDEC" stroke="#dc2626" stroke-width="1"/>
+  <text x="445" y="1082" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="700">⛔ CIUDADANO en panel web</text>
+  <text x="445" y="1100" text-anchor="middle" fill="#dc2626" font-size="10">POST /api/login → 403</text>
+  <text x="445" y="1114" text-anchor="middle" fill="#dc2626" font-size="10">"Este rol no tiene acceso al panel"</text>
+
+  <!-- ============================================ -->
+  <!-- BASE DE DATOS -->
+  <!-- ============================================ -->
+  <text x="30" y="1165" font-size="14" font-weight="700" fill="#0F6B4F">🗄️ BASE DE DATOS — MySQL (software)</text>
+
+  <rect x="30" y="1180" width="1540" height="95" rx="8" fill="#fff" stroke="#c4b5bc" stroke-width="1" filter="url(#sh)"/>
+
+  <rect x="50" y="1195" width="280" height="65" rx="5" fill="#f9f7f8"/>
+  <text x="190" y="1213" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">usuarios (5)</text>
+  <text x="60" y="1231" fill="#555" font-size="9">admin · administrador · recursos</text>
+  <text x="60" y="1246" fill="#555" font-size="9">cliente · empresa</text>
+
+  <rect x="350" y="1195" width="230" height="65" rx="5" fill="#f9f7f8"/>
+  <text x="465" y="1213" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">roles (8)</text>
+  <text x="360" y="1231" fill="#555" font-size="9">ADMIN · ADMINISTRADOR</text>
+  <text x="360" y="1246" fill="#555" font-size="9">CIUDADANO · EMPRESAS · RECURSOS</text>
+
+  <rect x="600" y="1195" width="340" height="65" rx="5" fill="#f9f7f8"/>
+  <text x="770" y="1213" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">personal (6)</text>
+  <text x="610" y="1231" fill="#555" font-size="9">nombres · apellidos · dni · teléfono</text>
+  <text x="610" y="1246" fill="#555" font-size="9">regimen_laboral · condicion · nivel · nro_resolucion</text>
+
+  <rect x="960" y="1195" width="290" height="65" rx="5" fill="#f9f7f8"/>
+  <text x="1105" y="1213" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">unidades_organicas (8)</text>
+  <text x="970" y="1231" fill="#555" font-size="9">nombre · sigla · padre_id · nivel</text>
+  <text x="970" y="1246" fill="#555" font-size="9">Árbol: CM · ALC → GM → GGA, GINFRA, OGRH</text>
+
+  <rect x="1270" y="1195" width="280" height="65" rx="5" fill="#f9f7f8"/>
+  <text x="1410" y="1213" text-anchor="middle" fill="#4a001f" font-size="11" font-weight="700">tipos_personal (8)</text>
+  <text x="1280" y="1231" fill="#555" font-size="9">Conductor · Ayudante · Limpieza</text>
+  <text x="1280" y="1246" fill="#555" font-size="9">Recolector · Administrativo · Operario · Otro</text>
+
+  <!-- ============================================ -->
+  <!-- RESUMEN -->
+  <!-- ============================================ -->
+  <rect x="30" y="1290" width="1540" height="95" rx="10" fill="#f3e8ec" stroke="#7a1636" stroke-width="1"/>
+  <text x="50" y="1315" fill="#4a001f" font-size="13" font-weight="700">📋 RESUMEN: ¿Qué está implementado vs pendiente?</text>
+
+  <text x="50" y="1340" fill="#0F6B4F" font-size="11" font-weight="700">✅ IMPLEMENTADO:</text>
+  <text x="230" y="1340" fill="#333" font-size="11">Login con JWT + Rate limiting · Roles y permisos · Pool MySQL · Auth middleware · Splash screen · Organigrama navegable con conteo recursivo · Gestión de Personal con campos Perú (CRUD completo) · Búsqueda de personas y unidades · ADMIN ve todos los módulos (solo lectura en operativos) · Protección contra fuerza bruta · Transacciones BD · Protección contra ciclos · Auditoría de bugs corregida</text>
+
+  <text x="50" y="1365" fill="#dc2626" font-size="11" font-weight="700">⏳ PENDIENTE:</text>
+  <text x="170" y="1365" fill="#333" font-size="11">Módulo Gestión de Unidades (MAQUINARIAS) · Módulo Gestión de Rutas y Equipos (OPERADOR) · Módulo Libro de Reclamos (OP. NOTIFICACIONES) · Módulo Dashboard con indicadores reales · Usuarios de prueba para MAQUINARIAS, OPERADOR, OP. NOTIFICACIONES · App móvil: implementar módulos placeholder · Módulo administración de usuarios para ADMIN</text>
+</svg>
