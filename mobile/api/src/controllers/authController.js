@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { jwt: jwtConfig, allowedRole } = require('../config/env');
+const { jwt: jwtConfig, allowedRoles } = require('../config/env');
 const userModel = require('../models/userModel');
 
 function signToken(usuario) {
@@ -66,7 +66,7 @@ async function login(req, res, next) {
       });
     }
 
-    if (normalizeRole(usuario.rol) !== normalizeRole(allowedRole)) {
+    if (!allowedRoles.includes(normalizeRole(usuario.rol))) {
       return res.status(403).json({
         success: false,
         message: 'Este usuario no tiene acceso al aplicativo móvil'

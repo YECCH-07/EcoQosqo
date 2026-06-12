@@ -11,11 +11,13 @@ CREATE TABLE IF NOT EXISTS roles (
 
 INSERT INTO roles (id, nombre) VALUES
   (1, 'ADMIN'),
-  (2, 'CLIENTE'),
+  (2, 'CIUDADANO'),
   (3, 'MAQUINARIAS'),
   (4, 'OPERADOR'),
   (5, 'OPERADOR DE NOTIFICACIONES'),
-  (6, 'RECURSOS')
+  (6, 'RECURSOS'),
+  (7, 'ADMINISTRADOR'),
+  (8, 'EMPRESAS')
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
 
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -32,7 +34,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 INSERT INTO usuarios (nombre, correo, password_hash, activo, rol_id) VALUES
-  ('Cliente EcoQosqo', 'cliente@ecoqosqo.pe', '$2a$10$KDxGlpaFX6JvTkMVkt/AwOPUooaZrRt9BrDUIzmIa993oWGrPXPJa', 1, 2)
+  ('Ciudadano EcoQosqo', 'ciudadano@ecoqosqo.pe', '$2a$10$KDxGlpaFX6JvTkMVkt/AwOPUooaZrRt9BrDUIzmIa993oWGrPXPJa', 1, 2)
 ON DUPLICATE KEY UPDATE
   nombre = VALUES(nombre),
   password_hash = VALUES(password_hash),

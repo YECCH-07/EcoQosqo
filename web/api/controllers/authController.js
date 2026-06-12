@@ -2,10 +2,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
-// Intentos fallidos por IP (en memoria — se resetea al reiniciar)
+// Intentos fallidos por IP (en memoria)
 const attemptsByIP = new Map();
 const MAX_ATTEMPTS = 5;
 const BLOCK_MINUTES = 15;
+
+// Limpieza periódica de entradas expiradas (cada 10 min)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of attemptsByIP) {
+    if (record.blockUntil && now >= record.blockUntil) {
+      attemptsByIP.delete(ip);
+    }
+  }
+}, 10 * 60 * 1000);
 
 const checkBruteForce = (ip, res) => {
   const now = Date.now();
@@ -87,8 +97,9 @@ const login = (req, res) => {
       // Login exitoso — limpiar contador
       resetAttempts(clientIP);
 
-      const rolNombre = (user.rol || '').toUpperCase().trim() || 'SIN_ROL';
-      const rolesSinPanelWeb = ['CLIENTE'];
+      const rolNombre = (String(user.rol || '')).toUpperCase().trim() || 'SIN_ROL';
+      // Roles que solo acceden al aplicativo móvil, NO al panel web
+      const rolesSinPanelWeb = ['CIUDADANO', 'EMPRESAS'];
 
       if (rolesSinPanelWeb.includes(rolNombre)) {
         return res.status(403).json({
