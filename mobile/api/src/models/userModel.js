@@ -93,7 +93,32 @@ async function findByEmail(correo) {
   return normalizeUser(rows[0], userColumns, roleColumns);
 }
 
+async function findById(id) {
+  const [userColumns, roleColumns] = await Promise.all([
+    getColumns('usuarios'),
+    getColumns('roles')
+  ]);
+
+  const selectedColumns = [
+    ...buildSelect('u', userColumns, USER_COLUMNS),
+    ...buildSelect('r', roleColumns, ROLE_COLUMNS)
+  ];
+
+  const [rows] = await pool.execute(
+    `SELECT ${selectedColumns.join(', ')}
+     FROM usuarios u
+     INNER JOIN roles r ON r.id = u.rol_id
+     WHERE u.id = ?
+     LIMIT 1`,
+    [id]
+  );
+
+  if (!rows.length) return null;
+  return normalizeUser(rows[0], userColumns, roleColumns);
+}
+
 module.exports = {
+  findById,
   findByEmail,
   isActive
 };
