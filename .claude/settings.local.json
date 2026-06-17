@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(Get-ChildItem -Recurse -Depth 0 \"f:\\\\APLICACIONES 2026\\\\EcoQosqo\")",
-      "Bash(Select-Object FullName, Mode)"
-    ]
-  }
-}

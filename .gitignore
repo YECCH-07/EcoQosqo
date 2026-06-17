@@ -60,3 +60,4 @@ mobile/api/uploads/*.jpg
 mobile/api/uploads/*.jpeg
 mobile/api/uploads/*.png
 mobile/api/uploads/*.gif
+.claude/
