@@ -42,7 +42,7 @@ export default function LoginScreen() {
     }
     try {
       setSubmitting(true);
-      await login(correo.trim(), password);
+      await login(correo.trim(), password, rememberMe);
     } catch (requestError) {
       setError(getErrorMessage(requestError));
     } finally {

@@ -8,9 +8,15 @@ import {
   Users,
   LogOut,
   Puzzle,
+  Shield,
 } from 'lucide-react';
 import PersonalManager from './PersonalManager';
 import OrganigramaManager from './OrganigramaManager';
+import VehiculoManager from './VehiculoManager';
+import RutasEquiposManager from './RutasEquiposManager';
+import DashboardPanel from './DashboardPanel';
+import ReportesPanel from './ReportesPanel';
+import UsuariosPanel from './UsuariosPanel';
 
 const normalizeRole = (role) => (role || '').toUpperCase().trim();
 
@@ -19,42 +25,49 @@ const allModules = [
     key: 'dashboard',
     icon: LayoutDashboard,
     name: 'Dashboard',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR'],
+    allowedRoles: ['ADMIN'],
     summary: 'Resumen general de indicadores del sistema.',
   },
   {
     key: 'organigrama',
     icon: Building2,
     name: 'Organigrama',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR'],
+    allowedRoles: ['ADMIN'],
     summary: 'Estructura orgánica de la municipalidad (gerencias, subgerencias, oficinas).',
   },
   {
-    key: 'unidades',
+    key: 'vehiculos',
     icon: Truck,
-    name: 'Gestión de Unidades',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'MAQUINARIAS'],
-    summary: 'Registro y control de unidades (crear, editar y estado).',
+    name: 'Módulo de Vehículos',
+    allowedRoles: ['ADMIN', 'MAQUINARIAS'],
+    summary: 'Flota vehicular: SOAT, revisión técnica, mantenimientos y alertas.',
   },
   {
     key: 'rutas-equipos',
     icon: Route,
     name: 'Gestión de Rutas y Equipos',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'OPERADOR'],
+    allowedRoles: ['ADMIN', 'OPERADOR'],
     summary: 'Asignación de rutas con unidad, conductor y ayudante.',
   },
   {
-    key: 'reclamos',
+    key: 'notificaciones',
     icon: BookOpen,
-    name: 'Gestión de Libro de Reclamos',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'OPERADOR DE NOTIFICACIONES'],
-    summary: 'Atención y seguimiento de reclamos y reportes ciudadanos.',
+    name: 'Gestión de Reportes',
+    allowedRoles: ['ADMIN', 'OPERADOR DE NOTIFICACIONES'],
+    summary: 'Atención de reportes ciudadanos: bandeja, cambio de estado y respuesta.',
+  },
+  {
+    key: 'usuarios',
+    icon: Shield,
+    name: 'Gestión de Usuarios',
+    allowedRoles: ['ADMIN'],
+    summary: 'Administración de cuentas de acceso al sistema.',
   },
   {
     key: 'personal',
     icon: Users,
     name: 'Gestión de Personal',
-    allowedRoles: ['ADMIN', 'ADMINISTRADOR', 'RECURSOS'],
+    allowedRoles: ['ADMIN', 'RECURSOS'],
     summary: 'Alta y mantenimiento de personal (conductor, ayudante, limpieza).',
   },
 ];
@@ -66,20 +79,20 @@ const getBaseContentByModule = (moduleKey) => {
       subtitle: 'Vista general de operación (contenido base).',
       bullets: ['Unidades activas (referencial)', 'Rutas del día (referencial)', 'Reclamos pendientes (referencial)'],
     },
-    unidades: {
-      title: 'Gestión de Unidades',
-      subtitle: 'Módulo base: listado y acciones principales.',
-      bullets: ['Crear unidad', 'Editar unidad', 'Cambiar estado: operativo / mantenimiento / inactivo'],
-    },
     'rutas-equipos': {
       title: 'Gestión de Rutas y Equipos',
       subtitle: 'Módulo base: asignaciones de ruta.',
       bullets: ['Asignar unidad a ruta', 'Asignar conductor y ayudante', 'Programar fecha de asignación'],
     },
-    reclamos: {
-      title: 'Gestión de Libro de Reclamos',
-      subtitle: 'Módulo base: bandeja de incidencias.',
-      bullets: ['Ver reclamos/reportes', 'Cambiar estado: pendiente / en proceso / atendido', 'Registrar observación de atención'],
+    notificaciones: {
+      title: 'Gestión de Reportes Ciudadanos',
+      subtitle: 'Atención de reportes: bandeja, estados y respuesta a ciudadanos.',
+      bullets: ['Ver reportes pendientes', 'Cambiar estado: pendiente / en proceso / atendido', 'Responder al ciudadano (notificación push)'],
+    },
+    vehiculos: {
+      title: 'Módulo de Vehículos',
+      subtitle: 'Gestión de la flota vehicular municipal.',
+      bullets: ['Registrar vehículos', 'Control de SOAT y revisión técnica', 'Historial de mantenimientos', 'Alertas de vencimientos'],
     },
     personal: {
       title: 'Gestión de Personal',
@@ -94,7 +107,7 @@ const getBaseContentByModule = (moduleKey) => {
 const AdminPanel = ({ onLogout, user }) => {
   const currentRole = normalizeRole(user?.rol);
   const isAdmin =
-    ['ADMIN', 'ADMINISTRADOR'].includes(currentRole)
+    ['ADMIN'].includes(currentRole)
     || Number(user?.rol_id) === 1
     || Number(user?.rol_id) === 7;
 
@@ -195,10 +208,20 @@ const AdminPanel = ({ onLogout, user }) => {
           </div>
         )}
 
-        {activeModule?.key === 'personal' ? (
-          <PersonalManager readOnly={isAdmin} />
+        {activeModule?.key === 'dashboard' ? (
+          <DashboardPanel key={activeModule.key} />
+        ) : activeModule?.key === 'usuarios' ? (
+          <UsuariosPanel key={activeModule.key} />
+        ) : activeModule?.key === 'notificaciones' ? (
+          <ReportesPanel key={activeModule.key} />
+        ) : activeModule?.key === 'rutas-equipos' ? (
+          <RutasEquiposManager key={activeModule.key} />
+        ) : activeModule?.key === 'vehiculos' ? (
+          <VehiculoManager key={activeModule.key} readOnly={isAdmin} />
+        ) : activeModule?.key === 'personal' ? (
+          <PersonalManager key={activeModule.key} readOnly={isAdmin} />
         ) : activeModule?.key === 'organigrama' ? (
-          <OrganigramaManager />
+          <OrganigramaManager key={activeModule.key} />
         ) : activeModule ? (
           <section className="module-detail">
             <div className="module-detail-header">

@@ -21,10 +21,14 @@ async function create(usuarioId, data) {
   const ubicacion = String(data.ubicacion || '').trim() || null;
   const prioridad = ['baja', 'media', 'alta'].includes(data.prioridad) ? data.prioridad : 'media';
 
+  const foto_url = String(data.foto_url || '').trim() || null;
+  const lat = data.lat ? Number(data.lat) : null;
+  const lng = data.lng ? Number(data.lng) : null;
+
   const [result] = await pool.execute(
-    `INSERT INTO reportes (usuario_id, titulo, descripcion, categoria, ubicacion, prioridad)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [usuarioId, titulo, descripcion, categoria, ubicacion, prioridad]
+    `INSERT INTO reportes (usuario_id, titulo, descripcion, categoria, ubicacion, prioridad, foto_url, lat, lng)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [usuarioId, titulo, descripcion, categoria, ubicacion, prioridad, foto_url, lat, lng]
   );
 
   return {
@@ -34,6 +38,9 @@ async function create(usuarioId, data) {
     categoria,
     ubicacion,
     prioridad,
+    foto_url,
+    lat,
+    lng,
     estado: 'pendiente'
   };
 }

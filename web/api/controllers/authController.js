@@ -112,7 +112,7 @@ const login = (req, res) => {
 
       const token = jwt.sign(
         { id: user.id, rol_id: user.rol_id || null, rol: rolNombre, usuario: user.usuario },
-        process.env.JWT_SECRET || 'secreto',
+        process.env.JWT_SECRET || 'ecoqosqo_web_secret_2026',
         { expiresIn }
       );
 

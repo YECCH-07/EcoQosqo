@@ -32,13 +32,15 @@ export function AuthProvider({ children }) {
     restoreSession();
   }, []);
 
-  async function login(correo, password) {
+  async function login(correo, password, rememberMe = true) {
     const { data } = await api.post('/auth/login', { correo, password });
 
-    await AsyncStorage.multiSet([
-      [TOKEN_KEY, data.token],
-      [USER_KEY, JSON.stringify(data.usuario)]
-    ]);
+    if (rememberMe) {
+      await AsyncStorage.multiSet([
+        [TOKEN_KEY, data.token],
+        [USER_KEY, JSON.stringify(data.usuario)]
+      ]);
+    }
 
     setToken(data.token);
     setUsuario(data.usuario);

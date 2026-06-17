@@ -37,12 +37,25 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const token = await AsyncStorage.getItem('ecoqosqo_token');
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      await AsyncStorage.multiRemove(['ecoqosqo_token', 'ecoqosqo_usuario']);
+      // Limpiar localStorage (para web) y forzar recarga al login
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('ecoqosqo_token');
+        localStorage.removeItem('ecoqosqo_usuario');
+      }
+      // Disparar evento para que AuthContext sepa que debe resetear
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('ecoqosqo:logout'));
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

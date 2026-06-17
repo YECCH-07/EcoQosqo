@@ -1,305 +1,238 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
+import { ActivityIndicator, Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 import api from '../api/client';
 import { colors, shadows } from '../styles/theme';
 
-const initialForm = {
-  categoria: 'general',
-  descripcion: '',
-  titulo: '',
-  ubicacion: ''
-};
+const ESTADOS = { pendiente: { color: '#856404', bg: '#FFF3CD', icon: 'time-outline', label: 'Pendiente' }, en_proceso: { color: '#004085', bg: '#CCE5FF', icon: 'sync-outline', label: 'En proceso' }, atendido: { color: '#155724', bg: '#D4EDDA', icon: 'checkmark-circle-outline', label: 'Atendido' } };
 
-function formatDate(value) {
-  if (!value) return '';
-  return new Date(value).toLocaleDateString();
+async function getGPS() {
+  try {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') return null;
+    const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, timeInterval: 8000 });
+    return { lat: pos.coords.latitude, lng: pos.coords.longitude };
+  } catch { return null; }
 }
 
 export default function ReportesScreen() {
   const [reportes, setReportes] = useState([]);
-  const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [descripcion, setDescripcion] = useState('');
+  const [fotoBase64, setFotoBase64] = useState(null);
+  const [ubicacion, setUbicacion] = useState(null);
+  const [editandoUbicacion, setEditandoUbicacion] = useState(false);
+  const [ubicacionManual, setUbicacionManual] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const loadReportes = useCallback(async () => {
+  const loadData = useCallback(async () => {
     try {
+      const res = await api.get('/reportes');
+      setReportes(res.data.reportes || []);
       setError('');
-      const { data } = await api.get('/reportes');
-      setReportes(data.reportes || []);
-    } catch (requestError) {
-      setError(requestError?.response?.data?.message || 'No se pudieron cargar los reportes.');
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+    } catch (e) { setError('Error al cargar'); }
+    finally { setLoading(false); setRefreshing(false); }
   }, []);
 
-  useEffect(() => {
-    loadReportes();
-  }, [loadReportes]);
+  useEffect(() => { loadData(); getGPS().then(g => g && setUbicacion(g)); }, [loadData]);
 
-  function updateField(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
-  }
-
-  async function submitReport() {
-    if (!form.titulo.trim() || !form.descripcion.trim()) {
-      Alert.alert('Datos incompletos', 'Ingresa titulo y descripcion.');
-      return;
+  const pickCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') { Alert.alert('Permiso', 'Se necesita permiso de cámara'); return; }
+    // Capturar ubicación al mismo tiempo que la foto
+    const gpsPromise = getGPS();
+    const result = await ImagePicker.launchCameraAsync({ mediaTypes: 'images', quality: 0.6, base64: true });
+    if (!result.canceled && result.assets?.length > 0) {
+      setFotoBase64(`data:image/jpeg;base64,${result.assets[0].base64}`);
+      const gps = await gpsPromise;
+      if (gps) setUbicacion(gps);
     }
+  };
 
+  const pickGallery = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: 'images', quality: 0.6, base64: true, exif: true });
+    if (!result.canceled && result.assets?.length > 0) {
+      setFotoBase64(`data:image/jpeg;base64,${result.assets[0].base64}`);
+      // Intentar extraer GPS del EXIF
+      const exif = result.assets[0].exif;
+      if (exif && exif.GPSLatitude) {
+        setUbicacion({ lat: exif.GPSLatitude, lng: exif.GPSLongitude });
+      } else {
+        const gps = await getGPS();
+        if (gps) setUbicacion(gps);
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!descripcion.trim()) return Alert.alert('Falta información', 'Describí qué está pasando');
+    setSaving(true); setError('');
     try {
-      setSaving(true);
-      await api.post('/reportes', form);
-      setForm(initialForm);
-      await loadReportes();
-      Alert.alert('Reporte enviado', 'Tu reporte fue registrado correctamente.');
-    } catch (requestError) {
-      Alert.alert('No se pudo enviar', requestError?.response?.data?.message || 'Intentalo nuevamente.');
-    } finally {
-      setSaving(false);
-    }
-  }
+      // Detectar prioridad por palabras clave
+      const txt = descripcion.toLowerCase();
+      let prioridadAuto = 'media';
+      if (/urgente|peligro|accidente|fuego|explos|derrame|toxico|riesgo/i.test(txt)) prioridadAuto = 'alta';
+      else if (/leve|menor|poquito|poco/i.test(txt)) prioridadAuto = 'baja';
 
-  if (loading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator color={colors.primary} size="large" />
-      </View>
-    );
-  }
+      const payload = {
+        titulo: descripcion.trim().slice(0, 60),
+        descripcion: descripcion.trim(),
+        categoria: 'residuos',
+        ubicacion: ubicacionManual || (ubicacion ? `${Number(ubicacion.lat).toFixed(6)}, ${Number(ubicacion.lng).toFixed(6)}` : ''),
+        prioridad: prioridadAuto,
+        lat: ubicacion?.lat || null,
+        lng: ubicacion?.lng || null,
+      };
+      if (fotoBase64) {
+        const uploadRes = await api.post('/upload', { imagen: fotoBase64 });
+        if (uploadRes.data.success) payload.foto_url = uploadRes.data.url;
+      }
+      await api.post('/reportes', payload);
+      Alert.alert('Reporte enviado', 'Gracias. Te notificaremos cuando sea atendido.');
+      setDescripcion(''); setFotoBase64(null); setUbicacionManual('');
+      getGPS().then(g => g && setUbicacion(g));
+      loadData();
+    } catch (e) { Alert.alert('Error', e?.response?.data?.message || 'Error al enviar'); }
+    finally { setSaving(false); }
+  };
+
+  const onRefresh = () => { setRefreshing(true); loadData(); };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.content}
-      refreshControl={
-        <RefreshControl
-          colors={[colors.primary]}
-          onRefresh={() => {
-            setRefreshing(true);
-            loadReportes();
-          }}
-          refreshing={refreshing}
-        />
-      }
-      style={styles.screen}
-    >
-      <Text style={styles.title}>Reportes</Text>
-      <Text style={styles.subtitle}>Registra incidencias y consulta su estado.</Text>
-
-      <View style={styles.formCard}>
-        <Text style={styles.formTitle}>Nuevo reporte</Text>
-        <TextInput
-          onChangeText={(value) => updateField('titulo', value)}
-          placeholder="Titulo"
-          placeholderTextColor={colors.muted}
-          style={styles.input}
-          value={form.titulo}
-        />
-        <TextInput
-          multiline
-          onChangeText={(value) => updateField('descripcion', value)}
-          placeholder="Descripcion"
-          placeholderTextColor={colors.muted}
-          style={[styles.input, styles.textArea]}
-          value={form.descripcion}
-        />
-        <TextInput
-          onChangeText={(value) => updateField('categoria', value)}
-          placeholder="Categoria"
-          placeholderTextColor={colors.muted}
-          style={styles.input}
-          value={form.categoria}
-        />
-        <TextInput
-          onChangeText={(value) => updateField('ubicacion', value)}
-          placeholder="Ubicacion"
-          placeholderTextColor={colors.muted}
-          style={styles.input}
-          value={form.ubicacion}
-        />
-        <Pressable disabled={saving} onPress={submitReport} style={styles.submitButton}>
-          <Ionicons color={colors.white} name="send-outline" size={18} />
-          <Text style={styles.submitText}>{saving ? 'Enviando...' : 'Enviar reporte'}</Text>
-        </Pressable>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} keyboardShouldPersistTaps="handled">
+      <View style={styles.header}>
+        <Text style={styles.title}>Reportar incidencia</Text>
+        <Text style={styles.sub}>Tu reporte ayuda a mantener Cusco limpio</Text>
       </View>
 
-      <Text style={styles.sectionTitle}>Mis reportes</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      {!reportes.length && !error ? (
-        <View style={styles.empty}>
-          <Ionicons color={colors.muted} name="document-text-outline" size={34} />
-          <Text style={styles.emptyText}>Aun no registraste reportes.</Text>
-        </View>
-      ) : null}
+      {/* FORMULARIO SIMPLIFICADO */}
+      <View style={styles.form}>
+        <TextInput style={styles.textarea} placeholder="¿Qué está pasando? Describí el problema..." value={descripcion} onChangeText={setDescripcion} multiline placeholderTextColor={colors.muted} />
 
-      {reportes.map((item) => (
-        <View key={item.id} style={styles.reportCard}>
-          <View style={styles.reportHeader}>
-            <Text style={styles.reportTitle}>{item.titulo}</Text>
-            <Text style={styles.status}>{item.estado}</Text>
-          </View>
-          <Text style={styles.reportDescription}>{item.descripcion}</Text>
-          <Text style={styles.meta}>
-            {item.categoria} {item.ubicacion ? `- ${item.ubicacion}` : ''} - {formatDate(item.creado_en)}
-          </Text>
-          {item.respuesta ? <Text style={styles.answer}>Respuesta: {item.respuesta}</Text> : null}
+        {/* Ubicación */}
+        <View style={styles.ubicacionRow}>
+          <Ionicons name="location-outline" size={18} color={ubicacion ? colors.success : colors.muted} />
+          {editandoUbicacion ? (
+            <View style={{ flex: 1, flexDirection: 'row', gap: 6 }}>
+              <TextInput style={[styles.ubicacionInput, { flex: 1 }]} value={ubicacionManual} onChangeText={setUbicacionManual} placeholder="Ej: Av. Sol 123, Cusco" placeholderTextColor={colors.muted} autoFocus />
+              <TouchableOpacity onPress={() => setEditandoUbicacion(false)}><Ionicons name="checkmark-circle" size={24} color={colors.success} /></TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => setEditandoUbicacion(true)}>
+              <Text style={styles.ubicacionText}>
+                {ubicacionManual || (ubicacion ? `GPS: ${Number(ubicacion.lat).toFixed(5)}, ${Number(ubicacion.lng).toFixed(5)}` : 'Detectando ubicación...')}
+              </Text>
+              <Text style={styles.ubicacionHint}>Tocá para editar</Text>
+            </TouchableOpacity>
+          )}
         </View>
-      ))}
+
+        {/* Foto */}
+        <View style={{ flexDirection: 'row', gap: 8 }}>
+          <TouchableOpacity style={styles.camBtn} onPress={pickCamera}>
+            <Ionicons name="camera-outline" size={22} color={colors.primary} />
+            <Text style={styles.camBtnText}>Cámara</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.camBtn} onPress={pickGallery}>
+            <Ionicons name="images-outline" size={22} color={colors.primary} />
+            <Text style={styles.camBtnText}>Galería</Text>
+          </TouchableOpacity>
+        </View>
+
+        {fotoBase64 && (
+          <View>
+            <Image source={{ uri: fotoBase64 }} style={styles.preview} resizeMode="cover" />
+            <TouchableOpacity style={styles.removeFoto} onPress={() => setFotoBase64(null)}>
+              <Ionicons name="close-circle" size={22} color={colors.danger} />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <TouchableOpacity style={[styles.submitBtn, (!descripcion.trim()) && { opacity: 0.5 }]} onPress={handleSubmit} disabled={saving} activeOpacity={0.8}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Ionicons name="send" size={24} color={colors.white} />
+            <View>
+              <Text style={styles.submitText}>{saving ? 'Enviando...' : 'Reportar incidencia'}</Text>
+              <Text style={styles.submitSub}>Se enviará a la municipalidad</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      {/* LISTA DE REPORTES */}
+      <View style={styles.listHeader}>
+        <Text style={styles.listTitle}>Mis reportes</Text>
+        <Text style={styles.listCount}>{reportes.length}</Text>
+      </View>
+
+      {loading ? <ActivityIndicator style={{ margin: 20 }} color={colors.primary} /> :
+       reportes.length === 0 ? <Text style={styles.empty}>No tenés reportes aún.</Text> :
+       reportes.map(r => {
+         const e = ESTADOS[r.estado] || ESTADOS.pendiente;
+         return (
+           <View key={r.id} style={styles.reporteCard}>
+             <View style={styles.reporteHeader}>
+               <Text style={styles.reporteTitulo} numberOfLines={1}>{r.titulo}</Text>
+               <View style={[styles.estadoBadge, { backgroundColor: e.bg }]}>
+                 <Ionicons name={e.icon} size={12} color={e.color} />
+                 <Text style={[styles.estadoText, { color: e.color }]}>{e.label}</Text>
+               </View>
+             </View>
+             <Text style={styles.reporteDesc} numberOfLines={2}>{r.descripcion}</Text>
+             <Text style={styles.reporteMeta}>{r.ubicacion || 'Sin ubicación'} · {r.creado_en?.slice(0, 10)}</Text>
+             {r.foto_url ? (
+               <Image source={{ uri: r.foto_url.startsWith('http') ? r.foto_url : `http://localhost:5000${r.foto_url}` }} style={{ width: '100%', height: 150, borderRadius: 8, marginTop: 8 }} resizeMode="cover" />
+             ) : null}
+             {r.respuesta ? (
+               <View style={styles.respuestaBox}>
+                 <Ionicons name="chatbubble-ellipses-outline" size={14} color={colors.success} />
+                 <Text style={styles.respuestaText}>{r.respuesta}</Text>
+               </View>
+             ) : null}
+           </View>
+         );
+       })}
+      <View style={{ height: 40 }} />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  answer: {
-    color: colors.primaryDark,
-    fontSize: 13,
-    fontWeight: '700',
-    marginTop: 10
-  },
-  center: {
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    flex: 1,
-    justifyContent: 'center'
-  },
-  content: {
-    padding: 18,
-    paddingBottom: 30
-  },
-  empty: {
-    alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderRadius: 8,
-    padding: 24,
-    ...shadows.card
-  },
-  emptyText: {
-    color: colors.secondary,
-    fontSize: 15,
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  error: {
-    color: colors.danger,
-    fontWeight: '700',
-    marginBottom: 10
-  },
-  formCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 8,
-    marginTop: 18,
-    padding: 16,
-    ...shadows.card
-  },
-  formTitle: {
-    color: colors.text,
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 12
-  },
-  input: {
-    backgroundColor: colors.input,
-    borderColor: colors.border,
-    borderRadius: 8,
-    borderWidth: 1,
-    color: colors.text,
-    fontSize: 15,
-    marginBottom: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 11
-  },
-  meta: {
-    color: colors.muted,
-    fontSize: 12,
-    marginTop: 10
-  },
-  reportCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 8,
-    marginBottom: 12,
-    padding: 16,
-    ...shadows.card
-  },
-  reportDescription: {
-    color: colors.secondary,
-    fontSize: 14,
-    lineHeight: 20,
-    marginTop: 10
-  },
-  reportHeader: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  reportTitle: {
-    color: colors.text,
-    flex: 1,
-    fontSize: 17,
-    fontWeight: '700',
-    paddingRight: 10
-  },
-  screen: {
-    backgroundColor: colors.background,
-    flex: 1
-  },
-  sectionTitle: {
-    color: colors.text,
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 12,
-    marginTop: 22
-  },
-  status: {
-    backgroundColor: colors.accentSoft,
-    borderRadius: 8,
-    color: colors.primaryDark,
-    fontSize: 12,
-    fontWeight: '700',
-    overflow: 'hidden',
-    paddingHorizontal: 9,
-    paddingVertical: 5
-  },
-  submitButton: {
-    alignItems: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: 8,
-    flexDirection: 'row',
-    gap: 8,
-    justifyContent: 'center',
-    marginTop: 2,
-    paddingVertical: 13
-  },
-  submitText: {
-    color: colors.white,
-    fontWeight: '700'
-  },
-  subtitle: {
-    color: colors.secondary,
-    fontSize: 14,
-    marginTop: 4
-  },
-  textArea: {
-    minHeight: 92,
-    textAlignVertical: 'top'
-  },
-  title: {
-    color: colors.text,
-    fontSize: 24,
-    fontWeight: '700'
-  }
+  container: { flex: 1, backgroundColor: colors.background },
+  header: { padding: 20, paddingTop: 50, backgroundColor: colors.surface },
+  title: { fontSize: 20, fontWeight: '700', color: colors.text },
+  sub: { fontSize: 13, color: colors.muted, marginTop: 4 },
+  error: { color: colors.danger, textAlign: 'center', marginTop: 8 },
+  form: { margin: 16, padding: 16, backgroundColor: colors.surface, borderRadius: 14, ...shadows.card, gap: 12 },
+  textarea: { backgroundColor: colors.input, borderRadius: 12, padding: 16, fontSize: 16, color: colors.text, borderWidth: 1, borderColor: colors.borderLight, minHeight: 120, textAlignVertical: 'top' },
+  ubicacionRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
+  ubicacionText: { fontSize: 13, color: colors.text },
+  ubicacionHint: { fontSize: 10, color: colors.muted, marginTop: 2 },
+  ubicacionInput: { backgroundColor: colors.input, borderRadius: 6, padding: 6, fontSize: 13, color: colors.text },
+  camBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, backgroundColor: colors.accentSoft, borderRadius: 10, borderWidth: 1, borderColor: colors.border },
+  camBtnText: { fontSize: 14, fontWeight: '600', color: colors.primary },
+  preview: { width: '100%', height: 200, borderRadius: 10 },
+  removeFoto: { position: 'absolute', top: 6, right: 6, backgroundColor: colors.white, borderRadius: 12 },
+  submitBtn: { alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: colors.primary, borderRadius: 14, marginTop: 12, ...shadows.card, shadowColor: colors.primary, shadowOpacity: 0.3 },
+  submitText: { color: colors.white, fontWeight: '700', fontSize: 19 },
+  submitSub: { color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: '500', marginTop: 2 },
+  listHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, marginTop: 8, marginBottom: 8 },
+  listTitle: { fontSize: 16, fontWeight: '700', color: colors.text },
+  listCount: { fontSize: 14, fontWeight: '700', color: colors.primaryLight },
+  empty: { textAlign: 'center', color: colors.muted, padding: 30 },
+  reporteCard: { marginHorizontal: 16, marginBottom: 10, padding: 16, backgroundColor: colors.surface, borderRadius: 12, ...shadows.card },
+  reporteHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  reporteTitulo: { fontSize: 14, fontWeight: '700', color: colors.text, flex: 1, marginRight: 8 },
+  estadoBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
+  estadoText: { fontSize: 11, fontWeight: '600' },
+  reporteDesc: { fontSize: 13, color: colors.secondary, marginBottom: 6 },
+  reporteMeta: { fontSize: 11, color: colors.muted },
+  respuestaBox: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 10, padding: 10, backgroundColor: colors.successBg, borderRadius: 8 },
+  respuestaText: { fontSize: 12, color: colors.success, flex: 1 },
 });

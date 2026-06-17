@@ -1,4 +1,5 @@
 const personalModel = require('../models/personalModel');
+const pool = require('../config/db');
 
 // ─── Tipos de personal ──────────────────────────────
 
@@ -71,7 +72,8 @@ const crear = (req, res) => {
     telefono: telefono || '', direccion: direccion || '',
     tipo_id, unidad_organica_id: unidad_organica_id || null,
     fecha_contratacion, fecha_fin_contrato: fecha_fin_contrato || null,
-    honorarios: honorarios || 0, estado: estado || 'activo',
+    honorarios: isNaN(Number(honorarios)) ? 0 : Number(honorarios),
+    estado: estado || 'activo',
     regimen_laboral: regimen_laboral || 'CAS',
     condicion: condicion || 'Contratado CAS',
     nivel: nivel || 'Profesional',
@@ -94,11 +96,11 @@ const actualizar = (req, res) => {
   const { id } = req.params;
   const { nombres, apellidos, dni, telefono, direccion, tipo_id, unidad_organica_id, fecha_contratacion, fecha_fin_contrato, honorarios, estado, regimen_laboral, condicion, nivel, nro_resolucion, correo_institucional } = req.body;
 
-  if (!nombres || !apellidos || !dni || !tipo_id || !fecha_contratacion) {
+  if (!nombres || !nombres.trim() || !apellidos || !apellidos.trim() || !dni || !dni.trim() || !tipo_id || !fecha_contratacion) {
     return res.status(400).json({ message: 'Faltan campos obligatorios' });
   }
 
-  if (dni.length !== 8 || !/^\d{8}$/.test(dni)) {
+  if (dni.trim().length !== 8 || !/^\d{8}$/.test(dni.trim())) {
     return res.status(400).json({ message: 'El DNI debe tener 8 dígitos numéricos' });
   }
 
@@ -107,7 +109,8 @@ const actualizar = (req, res) => {
     telefono: telefono || '', direccion: direccion || '',
     tipo_id, unidad_organica_id: unidad_organica_id || null,
     fecha_contratacion, fecha_fin_contrato: fecha_fin_contrato || null,
-    honorarios: honorarios || 0, estado: estado || 'activo',
+    honorarios: isNaN(Number(honorarios)) ? 0 : Number(honorarios),
+    estado: estado || 'activo',
     regimen_laboral: regimen_laboral || 'CAS',
     condicion: condicion || 'Contratado CAS',
     nivel: nivel || 'Profesional',
@@ -129,11 +132,20 @@ const actualizar = (req, res) => {
 
 const eliminar = (req, res) => {
   const { id } = req.params;
-  personalModel.remove(id, (err, result) => {
-    if (err) return res.status(500).json({ message: 'Error al eliminar el registro' });
-    if (!result) return res.status(404).json({ message: 'Personal no encontrado' });
-    return res.json({ message: 'Personal eliminado correctamente' });
-  });
+  // Verificar que no esté en un equipo activo
+  pool.query(
+    'SELECT e.nombre AS equipo FROM equipo_personal ep JOIN equipos_trabajo e ON ep.equipo_id = e.id WHERE ep.personal_id = ? AND e.activo = 1 LIMIT 1',
+    [id], (errEq, results) => {
+      if (errEq) return res.status(500).json({ message: 'Error al verificar equipo' });
+      if (results && results.length > 0) {
+        return res.status(409).json({ message: `No se puede eliminar: pertenece al equipo activo "${results[0].equipo}". Retírelo del equipo primero.` });
+      }
+      personalModel.remove(id, (err, result) => {
+        if (err) return res.status(500).json({ message: 'Error al eliminar el registro' });
+        if (!result) return res.status(404).json({ message: 'Personal no encontrado' });
+        return res.json({ message: 'Personal eliminado correctamente' });
+      });
+    });
 };
 
 const buscar = (req, res) => {

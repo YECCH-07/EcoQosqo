@@ -39,4 +39,19 @@ const authOptional = (req, res, next) => {
   next();
 };
 
-module.exports = { authRequired, authOptional };
+// Middleware de autorización por rol
+const requireRole = (...rolesPermitidos) => {
+  const allowed = rolesPermitidos.map((r) => r.toUpperCase().trim());
+  return (req, res, next) => {
+    const rolUsuario = (req.usuario?.rol || '').toUpperCase().trim();
+    if (!rolUsuario) {
+      return res.status(403).json({ message: 'No se pudo determinar el rol del usuario' });
+    }
+    if (!allowed.includes(rolUsuario)) {
+      return res.status(403).json({ message: 'No tiene permisos para realizar esta acción' });
+    }
+    next();
+  };
+};
+
+module.exports = { authRequired, authOptional, requireRole };

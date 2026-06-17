@@ -35,7 +35,17 @@ async function create(req, res, next) {
   }
 }
 
+async function obtener(req, res, next) {
+  try {
+    const { pool } = require('../config/db');
+    const [rows] = await pool.execute('SELECT * FROM reportes WHERE id = ? AND usuario_id = ?', [req.params.id, req.usuario.id]);
+    if (!rows.length) return res.status(404).json({ success: false, message: 'Reporte no encontrado' });
+    return res.json({ success: true, reporte: rows[0] });
+  } catch (error) { return next(error); }
+}
+
 module.exports = {
   create,
-  list
+  list,
+  obtener
 };

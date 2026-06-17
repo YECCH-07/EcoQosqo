@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { colors, shadows } from '../styles/theme';
@@ -20,7 +20,7 @@ function DetailRow({ icon, label, value }) {
 }
 
 export default function PerfilScreen() {
-  const { usuario: sessionUser } = useAuth();
+  const { usuario: sessionUser, logout } = useAuth();
   const [usuario, setUsuario] = useState(sessionUser);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +29,7 @@ export default function PerfilScreen() {
       try {
         const { data } = await api.get('/me');
         setUsuario(data.usuario || sessionUser);
-      } finally {
+      } catch { setUsuario(sessionUser); } finally {
         setLoading(false);
       }
     }
@@ -60,6 +60,11 @@ export default function PerfilScreen() {
         <DetailRow icon="shield-checkmark-outline" label="Rol" value={usuario?.rol} />
         <DetailRow icon="key-outline" label="Codigo de usuario" value={usuario?.id ? `#${usuario.id}` : ''} />
       </View>
+
+      <TouchableOpacity style={styles.logoutBtn} onPress={() => logout()}>
+        <Ionicons name="log-out-outline" size={20} color={colors.danger} />
+        <Text style={styles.logoutText}>Cerrar sesión</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -143,5 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     marginTop: 3
-  }
+  },
+  logoutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, padding: 16, marginTop: 20, backgroundColor: colors.dangerBg, borderRadius: 10 },
+  logoutText: { color: colors.danger, fontWeight: "700", fontSize: 15 },
 });

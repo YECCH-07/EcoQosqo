@@ -1,11 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../context/AuthContext';
-import DashboardScreen from '../screens/DashboardScreen';
+import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import NotificacionesScreen from '../screens/NotificacionesScreen';
 import PerfilScreen from '../screens/PerfilScreen';
-import PlaceholderScreen from '../screens/PlaceholderScreen';
 import ReportesScreen from '../screens/ReportesScreen';
 import RutaHoyScreen from '../screens/RutaHoyScreen';
 import SeguimientoScreen from '../screens/SeguimientoScreen';
@@ -37,8 +36,8 @@ export default function AppNavigator() {
       {usuario ? (
         <>
           <Stack.Screen
-            name="Dashboard"
-            component={DashboardScreen}
+            name="Home"
+            component={HomeScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Horarios" component={RutaHoyScreen} options={{ title: 'Ruta de hoy' }} />

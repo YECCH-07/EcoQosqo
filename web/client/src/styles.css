@@ -1272,3 +1272,137 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================
+   VEHICULOS MODULE — Tabs & Alert Cards
+   ============================================ */
+
+.veh-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid var(--border-light);
+}
+.veh-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.veh-tab:hover { background: var(--accent-soft); color: var(--text); }
+.veh-tab.active { background: var(--surface); color: var(--primary-light); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+
+.veh-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.veh-tab-badge.danger { background: var(--danger); color: #fff; }
+.veh-tab-badge.warning { background: #FFF3CD; color: #856404; }
+.veh-tab-badge.ok { background: #D4EDDA; color: #155724; }
+
+/* Alert card grid */
+.veh-alert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.veh-alert-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 18px;
+}
+.veh-alert-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.veh-alert-card-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.veh-alert-card-count {
+  font-size: 20px;
+  font-weight: 800;
+}
+.veh-alert-card-count.danger { color: var(--danger); }
+.veh-alert-card-count.warning { color: #856404; }
+.veh-alert-card-count.ok { color: #155724; }
+
+.veh-alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+.veh-alert-item:last-child { border-bottom: none; }
+.veh-alert-item-placa { font-weight: 600; font-family: monospace; color: var(--text); }
+.veh-alert-item-date { color: var(--text-secondary); font-size: 12px; }
+.veh-alert-item-days { font-weight: 700; font-size: 12px; }
+.veh-alert-item-days.danger { color: var(--danger); }
+.veh-alert-item-days.warning { color: #856404; }
+.veh-alert-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Maintenance sub-table */
+.veh-mant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.veh-mant-header h4 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text); }
+.veh-mant-vehiculo-selector { min-width: 280px; }
+
+/* Expiry badge inline in table */
+.veh-expiry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.veh-expiry-badge.ok { background: #D4EDDA; color: #155724; }
+.veh-expiry-badge.warning { background: #FFF3CD; color: #856404; }
+.veh-expiry-badge.danger { background: #F8D7DA; color: var(--danger); }
+.veh-expiry-badge.expired { background: #FDEDEC; color: var(--danger); font-weight: 700; }

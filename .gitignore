@@ -53,3 +53,10 @@ web-build/
 # Archivos temporales y duplicados
 AppEcoQosqo-actualizado/
 diagrama-*.svg
+*.rar
+
+# Uploads locales (imágenes de reportes)
+mobile/api/uploads/*.jpg
+mobile/api/uploads/*.jpeg
+mobile/api/uploads/*.png
+mobile/api/uploads/*.gif

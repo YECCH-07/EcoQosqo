@@ -6,6 +6,11 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const personalRoutes = require('./routes/personalRoutes');
 const unidadOrganicaRoutes = require('./routes/unidadOrganicaRoutes');
+const vehiculoRoutes = require('./routes/vehiculoRoutes');
+const rutaRoutes = require('./routes/rutaRoutes');
+const equipoRoutes = require('./routes/equipoRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +33,11 @@ app.use('/api', authRoutes);
 // Módulos operativos (protegidos por JWT en rutas)
 app.use('/api', personalRoutes);
 app.use('/api', unidadOrganicaRoutes);
+app.use('/api', vehiculoRoutes);
+app.use('/api', rutaRoutes);
+app.use('/api', equipoRoutes);
+app.use('/api', dashboardRoutes);
+app.use('/api', usuarioRoutes);
 
 // Manejador global de errores
 app.use((err, req, res, next) => {

@@ -8,7 +8,7 @@ const headers = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}
 const NIVELES = ['Alta Dirección', 'Gerencia', 'Subgerencia'];
 const emptyForm = { nombre: '', sigla: '', padre_id: '', nivel: '0', orden: '0' };
 
-const OrganigramaManager = () => {
+const OrganigramaManager = ({ readOnly = false }) => {
   const [currentUnitId, setCurrentUnitId] = useState(null);
   const [hijos, setHijos] = useState([]);
   const [unidades, setUnidades] = useState([]);
@@ -161,7 +161,7 @@ const OrganigramaManager = () => {
     const hijosCount = unidad.hijos_count || 0;
     const persCount = countRecursive(unidad.id);
     let msg = `¿Eliminar "${unidad.nombre}"?`;
-    if (hijosCount > 0) msg += `\n${hijosCount} subunidade(s) quedarán sin padre.`;
+    if (hijosCount > 0) msg += `\n${hijosCount} subunidad(es) quedarán sin padre.`;
     if (persCount > 0) msg += `\n${persCount} persona(s) quedarán sin unidad.`;
     if (!window.confirm(msg)) return;
     try {
@@ -177,7 +177,7 @@ const OrganigramaManager = () => {
     <div className="crud-container">
       <div className="crud-header">
         <h3>Organigrama Municipal</h3>
-        {currentUnitId && (
+        {currentUnitId && !readOnly && (
           <button className="crud-btn-primary" onClick={openCreate}>
             <Plus size={18} /> Nueva Subunidad
           </button>
@@ -224,9 +224,11 @@ const OrganigramaManager = () => {
         <div className="org-empty">
           <Building2 size={48} color="var(--text-muted)" />
           <p>El organigrama está vacío</p>
+          {!readOnly && (
           <button className="crud-btn-primary" onClick={openCreate} style={{ marginTop: 16 }}>
             <Plus size={18} /> Crear Primera Unidad
           </button>
+          )}
         </div>
       )}
 
@@ -243,12 +245,12 @@ const OrganigramaManager = () => {
               const totalCount = countRecursive(u.id);
               const hasSubs = u.hijos_count > 0;
               return (
-                <div key={u.id} className="org-unit-card" onClick={() => navigate(u.id)}>
+                <div key={u.id} className="org-unit-card" role="button" tabIndex={0} onClick={() => navigate(u.id)} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), navigate(u.id))}>
                   <div className="org-unit-card-top">
                     <Building2 size={20} color="var(--primary-light)" />
                     <div className="org-unit-card-actions" onClick={e => e.stopPropagation()}>
                       <button className="org-act-btn" title="Editar" onClick={() => openEdit(u)}><Edit2 size={14} /></button>
-                      <button className="org-act-btn org-act-del" title="Eliminar" onClick={() => handleDelete(u)}><Trash2 size={14} /></button>
+                      {!readOnly && <button className="org-act-btn org-act-del" title="Eliminar" onClick={() => handleDelete(u)}><Trash2 size={14} /></button>}
                     </div>
                   </div>
                   <h4 className="org-unit-card-name">{u.nombre}</h4>
@@ -286,12 +288,12 @@ const OrganigramaManager = () => {
                 const totalCount = countRecursive(u.id);
                 const hasSubs = u.hijos_count > 0;
                 return (
-                  <div key={u.id} className="org-unit-card" onClick={() => navigate(u.id)}>
+                  <div key={u.id} className="org-unit-card" role="button" tabIndex={0} onClick={() => navigate(u.id)} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), navigate(u.id))}>
                     <div className="org-unit-card-top">
                       <Building2 size={20} color="var(--primary-light)" />
                       <div className="org-unit-card-actions" onClick={e => e.stopPropagation()}>
                         <button className="org-act-btn" title="Editar" onClick={() => openEdit(u)}><Edit2 size={14} /></button>
-                        <button className="org-act-btn org-act-del" title="Eliminar" onClick={() => handleDelete(u)}><Trash2 size={14} /></button>
+                        {!readOnly && <button className="org-act-btn org-act-del" title="Eliminar" onClick={() => handleDelete(u)}><Trash2 size={14} /></button>}
                       </div>
                     </div>
                     <h4 className="org-unit-card-name">{u.nombre}</h4>

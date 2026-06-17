@@ -62,7 +62,8 @@ const PersonalManager = ({ readOnly = false }) => {
       const url = currentUnitId ? `${API}/unidades-organicas/${currentUnitId}/hijos` : `${API}/unidades-organicas/raiz/hijos`;
       const res = await axios.get(url, { headers: headers() });
       setHijos(res.data);
-    } catch (err) { /* ignore */ }
+      setError('');
+    } catch (err) { setError('Error al cargar subunidades'); }
   }, [currentUnitId]);
 
   useEffect(() => { loadData(); }, [loadData]);
@@ -82,7 +83,7 @@ const PersonalManager = ({ readOnly = false }) => {
   useEffect(() => {
     if (unidadSearch.length < 2) { setUnidadResults([]); return; }
     const timer = setTimeout(() => {
-      axios.get(`${API}/unidades-organicas/buscar?q=${encodeURIComponent(unidadSearch)}`)
+      axios.get(`${API}/unidades-organicas/buscar?q=${encodeURIComponent(unidadSearch)}`, { headers: headers() })
         .then(res => setUnidadResults(res.data)).catch(() => {});
     }, 200);
     return () => clearTimeout(timer);
@@ -367,7 +368,7 @@ const PersonalManager = ({ readOnly = false }) => {
             {hijos.map(u => {
               const count = personal.filter(p => p.unidad_organica_id === u.id).length;
               return (
-                <div key={u.id} className="org-unit-card" onClick={() => navigate(u.id)}>
+                <div key={u.id} className="org-unit-card" role="button" tabIndex={0} onClick={() => navigate(u.id)} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), navigate(u.id))}>
                   <div className="org-unit-card-top"><Building2 size={20} color="var(--primary-light)" /></div>
                   <h4 className="org-unit-card-name">{u.nombre}</h4>
                   <div className="org-unit-card-meta">{u.sigla && <span className="org-unit-card-sigla">{u.sigla}</span>}</div>
